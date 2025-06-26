@@ -3,13 +3,13 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("email").addEventListener("input", validateEmail);
   document.getElementById("password").addEventListener("input", validatePassword);
   document.getElementById("password2").addEventListener("input", validatePasswordMatch);
-  document.getElementById("bizreg").addEventListener("input", function () {
+  document.getElementById("businessNumber").addEventListener("input", function () {
     this.value = formatBizNo(this.value);
     validateBizReg();
   });
-  document.getElementById("shopname").addEventListener("input", validateShopName);
-  document.getElementById("name").addEventListener("input", validateName);
-  document.getElementById("shopaddress").addEventListener("input", validateShopAddress);
+  document.getElementById("shopName").addEventListener("input", validateShopName);
+  document.getElementById("sellerName").addEventListener("input", validateName);
+  document.getElementById("shopAddress").addEventListener("input", validateShopAddress);
   document.getElementById("tel").addEventListener("input", function () {
     this.value = formatPhoneNumber(this.value);
     validateTel();
@@ -74,34 +74,34 @@ function validatePasswordMatch() {
 }
 // 사업자등록번호
 function validateBizReg() {
-  const val = document.getElementById("bizreg").value.trim();
-  const error = document.getElementById("error-bizreg");
+  const val = document.getElementById("businessNumber").value.trim();
+  const error = document.getElementById("error-businessNumber");
   const regex = /^\d{3}-\d{2}-\d{5}$/;
   error.textContent = !regex.test(val)
-    ? "사업자등록번호를를 입력해주세요." : "";
+    ? "사업자등록번호를 입력해주세요." : "";
 }
 // 상호명
 function validateShopName() {
-  const val = document.getElementById("shopname").value.trim();
-  const error = document.getElementById("error-shopname");
-  error.textContent = (val.length < 2 || val.length > 24)
+  const val = document.getElementById("shopName").value.trim();
+  const error = document.getElementById("error-shopName");
+  error.textContent = (val.length < 2 || val.length > 30) // max 24 -> 30
     ? "상호명을 입력해주세요." : "";
 }
 // 이름
 function validateName() {
-  const val = document.getElementById("name").value.trim();
-  const error = document.getElementById("error-name");
+  const val = document.getElementById("sellerName").value.trim();
+  const error = document.getElementById("error-sellerName");
   const isKor = /^[가-힣]{2,8}$/.test(val);
   const isEng = /^[a-zA-Z\s]{2,45}$/.test(val);
   error.textContent = (!isKor && !isEng)
-    ? "이름은 한글 2~8자 입력해주세요." : "";
+    ? "이름은 한글 2~8자 또는 영문 2~45자로 입력해주세요." : "";
 }
 // 가게 주소
 function validateShopAddress() {
-  const val = document.getElementById("shopaddress").value.trim();
-  const error = document.getElementById("error-shopaddress");
+  const val = document.getElementById("shopAddress").value.trim();
+  const error = document.getElementById("error-shopAddress");
   error.textContent = (val.length < 5 || val.length > 200)
-    ? "가게 주소를를 입력해주세요." : "";
+    ? "가게 주소를 입력해주세요." : "";
 }
 // 전화번호
 function validateTel() {
@@ -120,48 +120,7 @@ function validateBirth() {
 
 
 // -------------------------------------------
-// ✅ 폼 제출 이벤트 처리
+// ✅ 폼 제출 이벤트 처리 (제거)
 // -------------------------------------------
-
-document.getElementById('signup-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const signupData = {
-    email: document.getElementById('email').value,
-    password: document.getElementById('password').value,
-    passwordCheck: document.getElementById('password-check').value,
-    name: document.getElementById('name').value,
-    nickname: document.getElementById('nickname').value,
-    phone: document.getElementById('phone').value,
-    storeName: document.getElementById('store-name').value,
-    businessNumber: document.getElementById('business-number').value
-  };
-
-  if (signupData.password !== signupData.passwordCheck) {
-    alert('비밀번호가 일치하지 않습니다.');
-    return;
-  }
-
-  try {
-    const response = await fetch('/seller/join', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(signupData)
-    });
-
-    const result = await response.json();
-
-    if (response.ok && result.success) {
-      alert('회원가입에 성공했습니다! 로그인 페이지로 이동합니다.');
-      window.location.href = '/seller/login';
-    } else {
-      alert('회원가입 실패: ' + result.message);
-    }
-  } catch (error) {
-    console.error('Signup Error:', error);
-    alert('회원가입 처리 중 오류가 발생했습니다.');
-  }
-});
+// 아래 로직은 현재 HTML 구조와 맞지 않으므로 제거합니다.
+// 폼 제출은 서버사이드에서 처리하고, 클라이언트에서는 실시간 유효성 검사만 담당합니다.

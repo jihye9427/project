@@ -33,7 +33,7 @@
     </div>
   </div>
 
-  <!-- 비밀번호 확인 -->
+  <!-- 비밀번호 확인 (검증용, 서버로 전송 안함) -->
   <div class="form-row">
     <label for="password2">비밀번호 확인</label>
     <div class="input-col">
@@ -42,39 +42,39 @@
     </div>
   </div>
 
-  <!-- 사업자등록번호 -->
+  <!-- ✅ 사업자등록번호 (DTO 필드명에 맞게 수정) -->
   <div class="form-row">
-    <label for="bizreg">사업자등록번호</label>
+    <label for="businessNumber">사업자등록번호</label>
     <div class="input-col">
-      <input type="text" id="bizreg" name="bizreg" maxlength="13" placeholder="000-00-00000" required />
-      <div class="error-msg" id="error-bizreg"></div>
+      <input type="text" id="businessNumber" name="businessNumber" maxlength="13" placeholder="000-00-00000" required />
+      <div class="error-msg" id="error-businessNumber"></div>
     </div>
   </div>
 
-  <!-- 상호명 -->
+  <!-- ✅ 상호명 (DTO 필드명에 맞게 수정) -->
   <div class="form-row">
-    <label for="shopname">상호명</label>
+    <label for="shopName">상호명</label>
     <div class="input-col">
-      <input type="text" id="shopname" name="shopname" placeholder="상호명 입력" required />
-      <div class="error-msg" id="error-shopname"></div>
+      <input type="text" id="shopName" name="shopName" placeholder="상호명 입력" required />
+      <div class="error-msg" id="error-shopName"></div>
     </div>
   </div>
 
-  <!-- 대표자 이름 -->
+  <!-- ✅ 대표자 이름 (DTO 필드명에 맞게 수정) -->
   <div class="form-row">
-    <label for="name">이름</label>
+    <label for="sellerName">이름</label>
     <div class="input-col">
-      <input type="text" id="name" name="name" placeholder="대표자 이름 입력" required />
-      <div class="error-msg" id="error-name"></div>
+      <input type="text" id="sellerName" name="sellerName" placeholder="대표자 이름 입력" required />
+      <div class="error-msg" id="error-sellerName"></div>
     </div>
   </div>
 
-  <!-- 가게 주소 -->
+  <!-- 가게 주소 (DTO에 필드 추가 필요하거나 제거) -->
   <div class="form-row">
-    <label for="shopaddress">가게 주소</label>
+    <label for="shopAddress">가게 주소</label>
     <div class="input-col">
-      <input type="text" id="shopaddress" name="shopaddress" placeholder="가게 주소 입력" required />
-      <div class="error-msg" id="error-shopaddress"></div>
+      <input type="text" id="shopAddress" name="shopAddress" placeholder="가게 주소 입력" />
+      <div class="error-msg" id="error-shopAddress"></div>
     </div>
   </div>
 
@@ -82,7 +82,7 @@
   <div class="form-row">
     <label for="tel">전화번호</label>
     <div class="input-col">
-      <input type="text" id="tel" name="tel" maxlength="13" placeholder="010-1234-5678" required />
+      <input type="text" id="tel" name="tel" maxlength="13" placeholder="010-1234-5678" />
       <div class="error-msg" id="error-tel"></div>
     </div>
   </div>

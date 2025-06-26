@@ -14,9 +14,9 @@ public class AuthInterceptor implements HandlerInterceptor {
         // 현재 세션을 가져옴 (없으면 null)
         HttpSession session = request.getSession(false);
 
-        // 세션이 없거나, 세션에 로그인 정보가 없으면
+        // 세션이 없거나, 어떤 종류의 로그인 정보도 없는 경우
         if (session == null || (session.getAttribute("loginBuyer") == null && session.getAttribute("loginSeller") == null)) {
-            // 로그인 페이지로 리다이렉트
+            // 기존에 요청했던 주소를 쿼리 파라미터로 담아서 로그인 페이지로 리다이렉트
             response.sendRedirect("/login?redirectURL=" + requestURI);
             return false; // 컨트롤러 실행 중단
         }

@@ -1,60 +1,44 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const response = await fetch('/buyer/info', {
-            headers: { 'Accept': 'application/json' }
-        });
-        const result = await response.json();
+document.addEventListener('DOMContentLoaded', () => {
+    const editBtn = document.getElementById('edit-btn');
+    const saveBtn = document.getElementById('save-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const passwordField = document.getElementById('password-field');
 
-        if (result.success) {
-            const buyer = result.data;
-            document.getElementById('email').value = buyer.email;
-            document.getElementById('name').value = buyer.name;
-            document.getElementById('nickname').value = buyer.nickname;
-            document.getElementById('phone').value = buyer.phone;
-        } else {
-            alert(result.message);
-            window.location.href = '/buyer/login';
+    const editableFields = [
+        document.getElementById('nickname'),
+        document.getElementById('address'),
+        document.getElementById('tel')
+    ];
+
+    // 수정 버튼 클릭 이벤트
+    editBtn.addEventListener('click', () => {
+        // '수정 모드'로 전환
+        editableFields.forEach(field => field.readOnly = false);
+        
+        // 버튼 상태 변경
+        editBtn.style.display = 'none';
+        saveBtn.style.display = 'inline-block';
+        cancelBtn.style.display = 'inline-block';
+        
+        // 비밀번호 필드 표시
+        passwordField.style.display = 'flex'; // 또는 'block'
+    });
+
+    // 취소 버튼 클릭 이벤트
+    cancelBtn.addEventListener('click', () => {
+        // '조회 모드'로 되돌리기 (페이지 새로고침)
+        window.location.reload();
+    });
+    
+    // 폼 제출 전 유효성 검사 (선택사항, 현재는 비밀번호 입력 여부만 체크)
+    document.getElementById('buyer-update-form').addEventListener('submit', (e) => {
+        // '수정 모드'일 때만 검사
+        if (saveBtn.style.display === 'inline-block') {
+            const currentPassword = document.getElementById('currentPassword').value;
+            if (!currentPassword) {
+                alert('정보를 수정하려면 현재 비밀번호를 입력해야 합니다.');
+                e.preventDefault(); // 폼 제출 중단
+            }
         }
-    } catch (error) {
-        console.error('Error fetching buyer info:', error);
-        alert('회원 정보를 불러오는 중 오류가 발생했습니다.');
-    }
-});
-
-document.getElementById('update-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const updateData = {
-        currentPassword: document.getElementById('current-password').value,
-        newPassword: document.getElementById('new-password').value,
-        nickname: document.getElementById('nickname').value,
-        phone: document.getElementById('phone').value
-    };
-
-    try {
-        const response = await fetch('/buyer/info', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(updateData)
-        });
-
-        const result = await response.json();
-
-        if (response.ok && result.success) {
-            alert('회원정보가 성공적으로 수정되었습니다.');
-            window.location.href = '/buyer/mypage';
-        } else {
-            alert('정보 수정 실패: ' + result.message);
-        }
-    } catch (error) {
-        console.error('Error updating buyer info:', error);
-        alert('회원정보 수정 중 오류가 발생했습니다.');
-    }
-});
-
-document.getElementById('cancel-btn').addEventListener('click', () => {
-    window.history.back(); // 이전 페이지로
+    });
 }); 

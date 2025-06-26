@@ -52,8 +52,8 @@ public class SellerDAOImpl implements SellerDAO {
 
   @Override
   public int update(Long sellerId, Seller seller) {
-    String sql = "UPDATE seller SET shop_name = ?, name = ?, shop_address = ?, tel = ?, udate = systimestamp WHERE seller_id = ?";
-    return jdbcTemplate.update(sql, seller.getShopName(), seller.getName(), seller.getShopAddress(), seller.getTel(), sellerId);
+    String sql = "UPDATE seller SET shop_name = ?, name = ?, shop_address = ?, tel = ? WHERE seller_id = ?";
+    return jdbcTemplate.update(sql, seller.getShopName(), seller.getSellerName(), seller.getShopAddress(), seller.getTel(), sellerId);
   }
 
   @Override

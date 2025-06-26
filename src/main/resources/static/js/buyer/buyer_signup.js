@@ -1,6 +1,6 @@
 // ✅ DOM 로딩 후 각 입력 필드 이벤트 바인딩
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("name").addEventListener("input", validateName);
+  document.getElementById("buyerName").addEventListener("input", validateName);
   document.getElementById("nickname").addEventListener("input", validateNickname);
   document.getElementById("email").addEventListener("input", validateEmail);
   document.getElementById("password").addEventListener("input", validatePassword);
@@ -38,8 +38,8 @@ function formatPhoneNumber(value) {
 // -------------------------------------------
 // 이름
 function validateName() {
-  const name = document.getElementById("name").value.trim();
-  const error = document.getElementById("error-name");
+  const name = document.getElementById("buyerName").value.trim();
+  const error = document.getElementById("error-buyerName");
   const isKor = /^[가-힣]{2,8}$/.test(name);
   const isEng = /^[a-zA-Z\s]{2,45}$/.test(name);
   error.textContent = (!isKor && !isEng) ? "이름은 2~8자 입력해주세요." : "";
@@ -107,58 +107,6 @@ function validateAddress() {
     : "";
 }
 
-// ✅ 폼 제출 처리 - 서버로 전송 방식
-document.getElementById("buyer-signup-form").addEventListener("submit", async function (e) {
-  e.preventDefault();
-
-  validateName();
-  validateNickname();
-  validateEmail();
-  validatePassword();
-  validatePasswordMatch();
-  validateTel();
-  validateBirth();
-  validateAddress();
-
-  const hasError = Array.from(document.querySelectorAll(".error-msg"))
-    .some(div => div.textContent !== "");
-  if (hasError) return;
-
-  // [수정] 선택된 성별 값을 가져옴
-  const selectedGender = document.querySelector('input[name="gender"]:checked').value;
-
-  // 서버에 보낼 데이터 구성
-  const formData = {
-    name: this.name.value.trim(),
-    nickname: this.nickname.value.trim(),
-    email: this.email.value.trim(),
-    password: this.password.value,
-    tel: this.tel.value.trim(),
-    gender: selectedGender,
-    birth: this.birth.value,
-    address: this.address.value.trim()
-  };
-
-  try {
-    const response = await fetch('/buyer/join', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    });
-
-    const result = await response.json();
-
-    if (response.ok && result.success) {
-      alert('회원가입에 성공했습니다! 로그인 페이지로 이동합니다.');
-      window.location.href = '/buyer/login';
-    } else {
-      alert('회원가입 실패: ' + result.message);
-    }
-  } catch (error) {
-    console.error('회원가입 요청 오류:', error);
-    alert('회원가입 중 오류가 발생했습니다.');
-  }
-});
+// ✅ 폼 제출 처리 - 서버로 전송 방식 (제거)
+// 폼 제출은 서버사이드에서 처리하고, 클라이언트에서는 실시간 유효성 검사만 담당합니다.
+// 아래 로직은 현재 HTML 구조와 맞지 않으므로 제거합니다.

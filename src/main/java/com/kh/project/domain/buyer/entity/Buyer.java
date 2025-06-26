@@ -2,7 +2,7 @@ package com.kh.project.domain.buyer.entity;
 
 import lombok.Data;
 import java.sql.Timestamp;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 public class Buyer {
@@ -10,10 +10,10 @@ public class Buyer {
   private String email;
   private String password;
   private String tel;
-  private String name;
+  private String buyerName;
   private String nickname;
   private String gender;
-  private Date birth;
+  private LocalDate birth;
   private String address;
   private String gubun;
   private String status;

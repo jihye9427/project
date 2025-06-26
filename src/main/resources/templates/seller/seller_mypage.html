@@ -3,55 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>판매자 마이페이지</title>
+    <title>판매자 정보 수정</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
-    <style>
-        .mypage-container {
-            text-align: center;
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        .welcome-message {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            color: #333;
-        }
-        .mypage-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        .mypage-menu button {
-            width: 100%;
-            padding: 1rem;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .btn-primary {
-            background-color: #28a745;
-            color: white;
-        }
-        .btn-primary:hover {
-            background-color: #218838;
-        }
-    </style>
 </head>
 <body>
 <a th:href="@{/}" class="home-button">🏠 홈으로</a>
-<div class="mypage-container">
-    <h1 class="welcome-message">판매자 마이페이지</h1>
-    <div class="mypage-menu">
-        <button class="btn-primary">판매 상품 관리</button>
-        <button class="btn-primary">판매 내역 관리</button>
-        <button class="btn-primary">고객 관리</button>
-        <button class="btn-primary">판매자 정보 관리</button>
-    </div>
+
+<div class="container">
+    <h2>판매자 정보 수정</h2>
+    
+    <!--/* 정보 수정 성공/실패 메시지 */-->
+    <div th:if="${param.success}" class="success-message">정보가 성공적으로 수정되었습니다.</div>
+    <div th:if="${param.error == 'password'}" class="error-message">현재 비밀번호가 일치하지 않습니다.</div>
+
+    <form id="seller-update-form" class="seller-form" th:action="@{/seller/mypage}" th:object="${seller}" method="post">
+        <!-- 이메일 (수정 불가) -->
+        <div class="form-row">
+            <label for="email">이메일</label>
+            <div class="input-col">
+                <input type="email" id="email" name="email" th:value="*{email}" readonly />
+            </div>
+        </div>
+
+        <!-- 상호명 -->
+        <div class="form-row">
+            <label for="shopName">상호명</label>
+            <div class="input-col">
+                <input type="text" id="shopName" name="shopName" th:value="*{shopName}" required />
+            </div>
+        </div>
+        
+        <!-- 대표자명 -->
+        <div class="form-row">
+            <label for="name">대표자명</label>
+            <div class="input-col">
+                <input type="text" id="name" name="name" th:value="*{name}" required />
+            </div>
+        </div>
+
+        <!-- 가게 주소 -->
+        <div class="form-row">
+            <label for="shopAddress">가게 주소</label>
+            <div class="input-col">
+                <input type="text" id="shopAddress" name="shopAddress" th:value="*{shopAddress}" />
+            </div>
+        </div>
+        
+        <!-- 전화번호 -->
+        <div class="form-row">
+            <label for="tel">전화번호</label>
+            <div class="input-col">
+                <input type="text" id="tel" name="tel" th:value="*{tel}" />
+            </div>
+        </div>
+
+        <!-- 현재 비밀번호 (정보 수정을 위해 필요) -->
+        <div class="form-row">
+            <label for="currentPassword">현재 비밀번호</label>
+            <div class="input-col">
+                <input type="password" id="currentPassword" name="currentPassword" placeholder="정보 수정을 위해 현재 비밀번호를 입력하세요." required />
+            </div>
+        </div>
+
+        <button type="submit">정보 수정</button>
+        <button type="button" th:onclick="|location.href='@{/seller/leave}'|" class="btn-leave">회원 탈퇴</button>
+    </form>
 </div>
 
-<script th:src="@{/js/seller/mypage.js}"></script>
+<script th:src="@{/js/seller/seller_update.js}"></script>
 </body>
 </html>

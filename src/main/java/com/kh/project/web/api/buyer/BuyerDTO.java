@@ -4,14 +4,15 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 
 public class BuyerDTO {
 
   @Data
-  public static class JoinReq {
+  public static class JoinRequest {
     @NotBlank(message = "이메일은 필수 입력 항목입니다.")
     @Email(message = "유효한 이메일 형식이 아닙니다.")
     private String email;
@@ -23,31 +24,33 @@ public class BuyerDTO {
     private String tel;
 
     @NotBlank
-    private String name;
+    private String buyerName;
 
     @NotBlank
     @Size(max = 8, message = "닉네임은 최대 8자까지 가능합니다.")
     private String nickname;
 
     private String gender;
-    private Date birth;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate birth;
     private String address;
   }
 
   @Data
-  public static class InfoRes {
+  public static class InformationResponse {
     private Long buyerId;
     private String email;
     private String tel;
-    private String name;
+    private String buyerName;
     private String nickname;
     private String gender;
-    private Date birth;
+    private LocalDate birth;
     private String address;
   }
 
   @Data
-  public static class UpdateReq {
+  public static class UpdateRequest {
     private String tel;
     private String nickname;
     private String address;

@@ -3,21 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>구매자 마이페이지</title>
+    <title>구매자 정보</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
 <a th:href="@{/}" class="home-button">🏠 홈으로</a>
-<div class="container mypage-container">
-    <h2 id="welcome-message" class="welcome-message">안녕하세요! 구매자님</h2>
-    <div class="mypage-menu">
-        <button id="update-info-btn" class="btn-primary">회원정보 수정</button>
-        <button id="leave-btn" class="btn-danger">회원 탈퇴</button>
-        <button id="logout-btn" class="btn-secondary">로그아웃</button>
-    </div>
-</div>
-<a th:href="@{/}">메인 페이지로 돌아가기</a>
 
-<script th:src="@{/js/buyer/mypage.js}"></script>
+<div class="container">
+    <h2>마이페이지</h2>
+
+    <div th:if="${param.success}" class="success-message">정보가 성공적으로 수정되었습니다.</div>
+    <div th:if="${param.error == 'password'}" class="error-message">현재 비밀번호가 일치하지 않습니다.</div>
+
+    <form id="buyer-update-form" class="buyer-form" th:action="@{/buyer/mypage}" th:object="${buyer}" method="post">
+        <!-- 이메일 (수정 불가) -->
+        <div class="form-row">
+            <label for="email">이메일</label>
+            <div class="input-col">
+                <input type="email" id="email" name="email" th:value="*{email}" readonly />
+            </div>
+        </div>
+
+        <!-- 이름 (수정 불가) -->
+        <div class="form-row">
+            <label for="buyerName">이름</label>
+            <div class="input-col">
+                <input type="text" id="buyerName" name="buyerName" th:value="*{buyerName}" readonly />
+            </div>
+        </div>
+        
+        <!-- 닉네임 -->
+        <div class="form-row">
+            <label for="nickname">닉네임</label>
+            <div class="input-col">
+                <input type="text" id="nickname" name="nickname" th:value="*{nickname}" readonly required />
+            </div>
+        </div>
+
+        <!-- 주소 -->
+        <div class="form-row">
+            <label for="address">주소</label>
+            <div class="input-col">
+                <input type="text" id="address" name="address" th:value="*{address}" readonly />
+            </div>
+        </div>
+        
+        <!-- 전화번호 -->
+        <div class="form-row">
+            <label for="tel">전화번호</label>
+            <div class="input-col">
+                <input type="text" id="tel" name="tel" th:value="*{tel}" readonly />
+            </div>
+        </div>
+
+        <!-- 현재 비밀번호 (수정 모드에서만 보임) -->
+        <div class="form-row" id="password-field" style="display: none;">
+            <label for="currentPassword">현재 비밀번호</label>
+            <div class="input-col">
+                <input type="password" id="currentPassword" name="currentPassword" placeholder="정보 수정을 위해 현재 비밀번호를 입력하세요." />
+            </div>
+        </div>
+        
+        <div class="form-buttons">
+            <button type="button" id="edit-btn" class="btn-primary">정보 수정</button>
+            <button type="submit" id="save-btn" class="btn-primary" style="display: none;">저장</button>
+            <button type="button" id="cancel-btn" class="btn-secondary" style="display: none;">취소</button>
+            <button type="button" th:onclick="|location.href='@{/buyer/leave}'|" class="btn-leave">회원 탈퇴</button>
+        </div>
+    </form>
+</div>
+
+<script th:src="@{/js/buyer/buyer_update.js}"></script>
 </body>
 </html>
