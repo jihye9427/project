@@ -30,7 +30,7 @@ public class SellerSVCImpl implements SellerSVC {
   @Transactional(readOnly = true)
   public Seller login(String email, String password) {
     return sellerDAO.findByEmail(email)
-        .filter(seller -> seller.getPassword().equals(password))
+        .filter(seller -> seller.getPassword().trim().equals(password.trim()))
         .orElseThrow(() -> new UserException.LoginFailed("아이디 또는 비밀번호가 일치하지 않습니다."));
   }
 
@@ -60,7 +60,7 @@ public class SellerSVCImpl implements SellerSVC {
   @Transactional(readOnly = true)
   public boolean checkPassword(Long sellerId, String password) {
     return sellerDAO.findById(sellerId)
-        .map(seller -> seller.getPassword().equals(password))
+        .map(seller -> seller.getPassword().trim().equals(password.trim()))
         .orElse(false);
   }
 }

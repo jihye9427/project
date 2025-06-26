@@ -24,7 +24,7 @@ public class BuyerDTO {
     private String tel;
 
     @NotBlank
-    private String buyerName;
+    private String name;
 
     @NotBlank
     @Size(max = 8, message = "닉네임은 최대 8자까지 가능합니다.")
@@ -42,7 +42,7 @@ public class BuyerDTO {
     private Long buyerId;
     private String email;
     private String tel;
-    private String buyerName;
+    private String name;
     private String nickname;
     private String gender;
     private LocalDate birth;

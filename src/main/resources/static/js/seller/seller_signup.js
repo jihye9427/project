@@ -3,12 +3,12 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("email").addEventListener("input", validateEmail);
   document.getElementById("password").addEventListener("input", validatePassword);
   document.getElementById("password2").addEventListener("input", validatePasswordMatch);
-  document.getElementById("businessNumber").addEventListener("input", function () {
+  document.getElementById("bizRegNo").addEventListener("input", function () {
     this.value = formatBizNo(this.value);
     validateBizReg();
   });
   document.getElementById("shopName").addEventListener("input", validateShopName);
-  document.getElementById("sellerName").addEventListener("input", validateName);
+  document.getElementById("name").addEventListener("input", validateName);
   document.getElementById("shopAddress").addEventListener("input", validateShopAddress);
   document.getElementById("tel").addEventListener("input", function () {
     this.value = formatPhoneNumber(this.value);
@@ -74,8 +74,8 @@ function validatePasswordMatch() {
 }
 // 사업자등록번호
 function validateBizReg() {
-  const val = document.getElementById("businessNumber").value.trim();
-  const error = document.getElementById("error-businessNumber");
+  const val = document.getElementById("bizRegNo").value.trim();
+  const error = document.getElementById("error-bizRegNo");
   const regex = /^\d{3}-\d{2}-\d{5}$/;
   error.textContent = !regex.test(val)
     ? "사업자등록번호를 입력해주세요." : "";
@@ -89,8 +89,8 @@ function validateShopName() {
 }
 // 이름
 function validateName() {
-  const val = document.getElementById("sellerName").value.trim();
-  const error = document.getElementById("error-sellerName");
+  const val = document.getElementById("name").value.trim();
+  const error = document.getElementById("error-name");
   const isKor = /^[가-힣]{2,8}$/.test(val);
   const isEng = /^[a-zA-Z\s]{2,45}$/.test(val);
   error.textContent = (!isKor && !isEng)

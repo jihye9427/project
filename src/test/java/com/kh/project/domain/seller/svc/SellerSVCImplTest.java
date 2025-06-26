@@ -34,9 +34,9 @@ class SellerSVCImplTest {
     seller.setSellerId(1L);
     seller.setEmail("seller@shop.com");
     seller.setPassword("shoppassword");
-    seller.setBusinessNumber("111-22-33333");
+    seller.setBizRegNo("111-22-33333");
     seller.setShopName("My Awesome Shop");
-    seller.setSellerName("John Doe");
+    seller.setName("John Doe");
     seller.setShopAddress("123 Market St");
     seller.setTel("010-1234-5678");
     return seller;
@@ -48,7 +48,7 @@ class SellerSVCImplTest {
     // given: 이메일과 사업자 번호가 중복되지 않는다고 가정
     Seller newSeller = createSampleSeller();
     when(sellerDAO.existsByEmail(newSeller.getEmail())).thenReturn(false);
-    when(sellerDAO.existsByBizRegNo(newSeller.getBusinessNumber())).thenReturn(false);
+    when(sellerDAO.existsByBizRegNo(newSeller.getBizRegNo())).thenReturn(false);
     when(sellerDAO.save(any(Seller.class))).thenReturn(newSeller);
 
     // when: 회원가입 실행
@@ -56,7 +56,7 @@ class SellerSVCImplTest {
 
     // then: 결과 검증
     assertNotNull(joinedSeller);
-    assertEquals("111-22-33333", joinedSeller.getBusinessNumber());
+    assertEquals("111-22-33333", joinedSeller.getBizRegNo());
   }
 
   @Test
@@ -65,7 +65,7 @@ class SellerSVCImplTest {
     // given: 이메일은 중복이 아니지만, 사업자 번호는 중복이라고 가정
     Seller newSeller = createSampleSeller();
     when(sellerDAO.existsByEmail(newSeller.getEmail())).thenReturn(false);
-    when(sellerDAO.existsByBizRegNo(newSeller.getBusinessNumber())).thenReturn(true);
+    when(sellerDAO.existsByBizRegNo(newSeller.getBizRegNo())).thenReturn(true);
 
     // when & then: BizRegNoAlreadyExists 예외가 발생하는지 검증
     assertThrows(BizRegNoAlreadyExists.class, () -> {

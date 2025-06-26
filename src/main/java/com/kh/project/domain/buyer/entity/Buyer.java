@@ -10,7 +10,7 @@ public class Buyer {
   private String email;
   private String password;
   private String tel;
-  private String buyerName;
+  private String name;
   private String nickname;
   private String gender;
   private LocalDate birth;

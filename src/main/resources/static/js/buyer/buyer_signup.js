@@ -1,6 +1,6 @@
 // ✅ DOM 로딩 후 각 입력 필드 이벤트 바인딩
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("buyerName").addEventListener("input", validateName);
+  document.getElementById("name").addEventListener("input", validateName);
   document.getElementById("nickname").addEventListener("input", validateNickname);
   document.getElementById("email").addEventListener("input", validateEmail);
   document.getElementById("password").addEventListener("input", validatePassword);
@@ -38,8 +38,8 @@ function formatPhoneNumber(value) {
 // -------------------------------------------
 // 이름
 function validateName() {
-  const name = document.getElementById("buyerName").value.trim();
-  const error = document.getElementById("error-buyerName");
+  const name = document.getElementById("name").value.trim();
+  const error = document.getElementById("error-name");
   const isKor = /^[가-힣]{2,8}$/.test(name);
   const isEng = /^[a-zA-Z\s]{2,45}$/.test(name);
   error.textContent = (!isKor && !isEng) ? "이름은 2~8자 입력해주세요." : "";

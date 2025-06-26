@@ -30,7 +30,7 @@ public class BuyerSVCImpl implements BuyerSVC {
     @Transactional(readOnly = true)
     public Buyer login(String email, String password) throws UserException.LoginFailed {
         return buyerDAO.findByEmail(email)
-            .filter(buyer -> buyer.getPassword().equals(password))
+            .filter(buyer -> buyer.getPassword().trim().equals(password.trim()))
             .orElseThrow(() -> new UserException.LoginFailed("아이디 또는 비밀번호가 일치하지 않습니다."));
     }
 
@@ -60,7 +60,7 @@ public class BuyerSVCImpl implements BuyerSVC {
     @Transactional(readOnly = true)
     public boolean checkPassword(Long buyerId, String password) {
         Optional<Buyer> optionalBuyer = buyerDAO.findById(buyerId);
-        return optionalBuyer.map(buyer -> buyer.getPassword().equals(password))
+        return optionalBuyer.map(buyer -> buyer.getPassword().trim().equals(password.trim()))
                 .orElse(false);
     }
 }

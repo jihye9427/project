@@ -27,7 +27,7 @@ public class BuyerController {
     
 
     // ===============================
-    // 페이지 보여주기 (GET 메소드들)
+    // 페이지 보여주기 (GET 메소들)
     // ===============================
 
     /**
@@ -56,7 +56,7 @@ public class BuyerController {
     }
 
     // ===============================
-    // 비즈니스 로직 처리 (POST 메소드들)
+    // 비즈니스 로직 처리 (POST 메소들)
     // ===============================
 
     /**
@@ -67,7 +67,7 @@ public class BuyerController {
         Buyer buyer = new Buyer();
         BeanUtils.copyProperties(joinReq, buyer);
         buyerSVC.join(buyer);
-        return "redirect:/buyer/login";
+        return "redirect:/";
     }
 
     /**

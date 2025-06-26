@@ -9,9 +9,9 @@ public class Seller {
   private Long sellerId;
   private String email;
   private String password;
-  private String businessNumber;
+  private String bizRegNo;
   private String shopName;
-  private String sellerName;
+  private String name;
   private String shopAddress;
   private String tel;
   private Date birth;

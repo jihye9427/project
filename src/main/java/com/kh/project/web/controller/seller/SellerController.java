@@ -64,7 +64,7 @@ public class SellerController {
         Seller seller = new Seller();
         BeanUtils.copyProperties(joinReq, seller);
         sellerSVC.join(seller);
-        return "redirect:/seller/login";
+        return "redirect:/";
     }
 
     /**

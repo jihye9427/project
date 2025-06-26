@@ -36,7 +36,7 @@ class BuyerSVCImplTest {
     buyer.setEmail("buyer@test.com");
     buyer.setPassword("password123");
     buyer.setNickname("testnick");
-    buyer.setBuyerName("Test Buyer");
+    buyer.setName("Test Buyer");
     buyer.setTel("010-0000-0000");
     return buyer;
   }
