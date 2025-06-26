@@ -10,11 +10,11 @@
 <a th:href="@{/}" class="home-button">🏠 홈으로</a>
 
 <div class="container">
-    <h2>판매자 정보 수정</h2>
+    <h2>마이페이지</h2>
     
     <!--/* 정보 수정 성공/실패 메시지 */-->
-    <div th:if="${param.success}" class="success-message">정보가 성공적으로 수정되었습니다.</div>
-    <div th:if="${param.error == 'password'}" class="error-message">현재 비밀번호가 일치하지 않습니다.</div>
+    <div th:if="${param.success}" class="success-message">회원정보가 수정되었습니다.</div>
+    <div th:if="${param.error == 'password'}" class="error-message">비밀번호가 일치하지 않습니다.</div>
 
     <form id="seller-update-form" class="seller-form" th:action="@{/seller/mypage}" th:object="${seller}" method="post">
         <!-- 이메일 (수정 불가) -->
@@ -29,7 +29,7 @@
         <div class="form-row">
             <label for="shopName">상호명</label>
             <div class="input-col">
-                <input type="text" id="shopName" name="shopName" th:value="*{shopName}" required />
+                <input type="text" id="shopName" name="shopName" th:value="*{shopName}" />
             </div>
         </div>
         
@@ -37,7 +37,7 @@
         <div class="form-row">
             <label for="name">대표자명</label>
             <div class="input-col">
-                <input type="text" id="name" name="name" th:value="*{name}" required />
+                <input type="text" id="name" name="name" th:value="*{name}" />
             </div>
         </div>
 
@@ -61,12 +61,16 @@
         <div class="form-row">
             <label for="currentPassword">현재 비밀번호</label>
             <div class="input-col">
-                <input type="password" id="currentPassword" name="currentPassword" placeholder="정보 수정을 위해 현재 비밀번호를 입력하세요." required />
+                <input type="password" id="currentPassword" name="currentPassword" placeholder="현재 비밀번호를 입력하세요." />
             </div>
         </div>
 
-        <button type="submit">정보 수정</button>
-        <button type="button" th:onclick="|location.href='@{/seller/leave}'|" class="btn-leave">회원 탈퇴</button>
+        <div class="form-buttons">
+            <button type="button" id="edit-btn" class="btn-primary">정보 수정</button>
+            <button type="submit" id="save-btn" class="btn-primary" style="display: none;">저장</button>
+            <button type="button" id="cancel-btn" class="btn-secondary" style="display: none;">취소</button>
+            <button type="button" id="leave-btn" th:onclick="|location.href='@{/seller/leave}'|" class="btn-leave">회원 탈퇴</button>
+        </div>
     </form>
 </div>
 

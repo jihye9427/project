@@ -44,7 +44,7 @@ public class ApiResponse<T> {
     }
 
     /**
-     * 코드 기반 응답 생성
+     * 코드기반 응답 생성
      */
     public static <T> ApiResponse<T> of(ApiResponseCode code, T data) {
         boolean success = code == ApiResponseCode.SUCCESS;
@@ -52,7 +52,7 @@ public class ApiResponse<T> {
     }
 
     /**
-     * 페이징 포함 응답 생성
+     * 페이징 응답 생성
      */
     public static <T> ApiResponse<T> of(ApiResponseCode code, T data, Paging paging) {
         boolean success = code == ApiResponseCode.SUCCESS;
@@ -60,7 +60,7 @@ public class ApiResponse<T> {
     }
 
     /**
-     * 상세 정보 포함 응답 생성
+     * 상세정보 응답 생성
      */
     public static <T> ApiResponse<T> withDetails(ApiResponseCode code, Map<String, String> details, T data) {
         boolean success = code == ApiResponseCode.SUCCESS;
@@ -68,14 +68,14 @@ public class ApiResponse<T> {
     }
 
     /**
-     * BusinessException으로부터 에러 응답 생성
+     * BusinessException 으로부터 에러 응답 생성
      */
     public static <T> ApiResponse<T> from(BusinessException e) {
         return new ApiResponse<>(false, null, e.getMessage(), e.getResponseCode().getRtcd(), null, null);
     }
 
     /**
-     * 페이징 정보 클래스
+     * 페이징 정보
      */
     @Getter
     @ToString

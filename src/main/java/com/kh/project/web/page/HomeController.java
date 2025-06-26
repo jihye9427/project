@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 
     /**
-     * 메인(홈) 페이지를 보여줍니다.
-     * 브라우저에서 / 또는 /home 주소로 GET 요청이 오면 이 메소드가 실행됩니다.
-     * @return "home" -> templates/home.html 파일을 찾아 렌더링합니다.
+     * 메인화면 페이지
+     * 브라우저에서 / 또는 /home 주소로 GET 요청이 오면 실행됨.
+     * @return "home" -> templates/home.html 파일을 찾아 렌더링
      */
     @GetMapping({"/", "/home"})
     public String home() {
@@ -21,22 +21,12 @@ public class HomeController {
     }
 
     /**
-     * 회원가입 유형 선택 페이지를 보여줍니다.
-     * 브라우저에서 /signup 경로로 GET 요청이 오면 이 메소드가 실행됩니다.
-     * @return "select_signup" -> templates/select_signup.html 파일을 찾아 렌더링합니다.
+     * 회원가입 유형 선택 페이지(구매자, 판매자)
+     * 브라우저에서 /signup 경로로 GET 요청이 오면 실행됨.
+     * @return "select_signup" -> templates/select_signup.html 파일을 찾아 렌더링
      */
     @GetMapping("/signup")
     public String signupSelect() {
         return "select_signup";
-    }
-
-    /**
-     * 로그인 유형 선택 페이지를 보여줍니다.
-     * 브라우저에서 /login 경로로 GET 요청이 오면 이 메소드가 실행됩니다.
-     * @return "select_login" -> templates/select_login.html 파일을 찾아 렌더링합니다.
-     */
-    @GetMapping("/login")
-    public String loginSelect() {
-        return "select_login";
     }
 } 

@@ -24,7 +24,7 @@ public class SellerController {
     public static final String LOGIN_SELLER = "loginSeller";
 
     // ===============================
-    // 페이지 보여주기 (GET 메소드들)
+    // 페이지 보여주기 (GET 메소들)
     // ===============================
 
     /**
@@ -90,9 +90,14 @@ public class SellerController {
      * 마이페이지 보여주기 (데이터 필요)
      */
     @GetMapping("/mypage")
-    public String mypage(@SessionAttribute(name = LOGIN_SELLER) Seller loginSeller, Model model) {
+    public String mypage(HttpSession session, Model model) {
+        Seller loginSeller = (Seller) session.getAttribute(LOGIN_SELLER);
+        if (loginSeller == null) {
+            return "redirect:/login";
+        }
+        
         Optional<Seller> memberInfo = sellerSVC.findMemberInfo(loginSeller.getSellerId());
-        model.addAttribute("seller", memberInfo.orElse(null));
+        model.addAttribute("seller", memberInfo.orElseThrow());
         return "seller/seller_mypage";
     }
 

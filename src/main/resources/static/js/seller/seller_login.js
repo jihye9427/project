@@ -6,26 +6,22 @@ document.querySelector('.seller-form').addEventListener('submit', async function
   const password = document.getElementById('password').value;
 
   try {
+    const formData = new URLSearchParams();
+    formData.append('email', email);
+    formData.append('password', password);
+
     const response = await fetch('/seller/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: JSON.stringify({ email, password }),
+      body: formData,
     });
 
-    if (response.ok) {
-      const result = await response.json();
-      if (result.success) {
-        alert('로그인 성공! 메인 페이지로 이동합니다.');
-        window.location.href = '/';
-      } else {
-        alert('로그인 실패: ' + result.message);
-      }
+    if (response.ok && response.redirected) {
+      window.location.href = response.url;
     } else {
-      const result = await response.json();
-      alert('로그인 실패: ' + result.message);
+      alert("이메일 또는 비밀번호가 일치하지 않습니다.");
     }
   } catch (error) {
     console.error('Login Error:', error);

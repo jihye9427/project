@@ -12,8 +12,8 @@
 <div class="container">
     <h2>마이페이지</h2>
 
-    <div th:if="${param.success}" class="success-message">정보가 성공적으로 수정되었습니다.</div>
-    <div th:if="${param.error == 'password'}" class="error-message">현재 비밀번호가 일치하지 않습니다.</div>
+    <div th:if="${param.success}" class="success-message">회원정보가 수정되었습니다.</div>
+    <div th:if="${param.error == 'password'}" class="error-message">비밀번호가 일치하지 않습니다.</div>
 
     <form id="buyer-update-form" class="buyer-form" th:action="@{/buyer/mypage}" th:object="${buyer}" method="post">
         <!-- 이메일 (수정 불가) -->
@@ -58,9 +58,9 @@
 
         <!-- 현재 비밀번호 (수정 모드에서만 보임) -->
         <div class="form-row" id="password-field" style="display: none;">
-            <label for="currentPassword">현재 비밀번호</label>
+            <label for="currentPassword">비밀번호</label>
             <div class="input-col">
-                <input type="password" id="currentPassword" name="currentPassword" placeholder="정보 수정을 위해 현재 비밀번호를 입력하세요." />
+                <input type="password" id="currentPassword" name="currentPassword" placeholder="현재 비밀번호를 입력하세요." />
             </div>
         </div>
         
@@ -68,7 +68,7 @@
             <button type="button" id="edit-btn" class="btn-primary">정보 수정</button>
             <button type="submit" id="save-btn" class="btn-primary" style="display: none;">저장</button>
             <button type="button" id="cancel-btn" class="btn-secondary" style="display: none;">취소</button>
-            <button type="button" th:onclick="|location.href='@{/buyer/leave}'|" class="btn-leave">회원 탈퇴</button>
+            <button type="button" id="leave-btn" th:onclick="|location.href='@{/buyer/leave}'|" class="btn-leave">회원 탈퇴</button>
         </div>
     </form>
 </div>

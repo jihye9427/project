@@ -55,6 +55,11 @@ public class BuyerController {
         return "buyer/buyer_leave";
     }
 
+    @GetMapping("/test")
+    public String testPage() {
+        return "buyer/test";
+    }
+
     // ===============================
     // 비즈니스 로직 처리 (POST 메소들)
     // ===============================
@@ -93,10 +98,12 @@ public class BuyerController {
      * 마이페이지 보여주기 (데이터 필요)
      */
     @GetMapping("/mypage")
-    public String mypage(@SessionAttribute(name = LOGIN_BUYER) Buyer loginBuyer, Model model) {
-        // 인터셉터가 로그인 여부를 체크해주므로, @SessionAttribute로 바로 정보를 받아옴
-        Optional<Buyer> memberInfo = buyerSVC.findMemberInfo(loginBuyer.getBuyerId());
-        model.addAttribute("buyer", memberInfo.orElse(null));
+    public String mypage(HttpSession session, Model model) {
+        Buyer loginBuyer = (Buyer) session.getAttribute(LOGIN_BUYER);
+        if (loginBuyer == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("buyer", loginBuyer);
         return "buyer/buyer_mypage";
     }
 
@@ -120,7 +127,7 @@ public class BuyerController {
         buyerSVC.findMemberInfo(loginBuyer.getBuyerId())
                 .ifPresent(updatedBuyer -> session.setAttribute(LOGIN_BUYER, updatedBuyer));
 
-        return "redirect:/buyer/mypage";
+        return "redirect:/buyer/mypage?success=true";
     }
 
     /**

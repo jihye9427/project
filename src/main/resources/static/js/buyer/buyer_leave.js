@@ -4,16 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        if (!document.getElementById('agree').checked) {
-            alert('탈퇴 약관에 동의해주세요.');
-            return;
-        }
-
         const password = document.getElementById('password').value;
-
-        if (!confirm('정말로 탈퇴하시겠습니까?')) {
-            return;
-        }
 
         try {
             const response = await fetch('/buyer/leave', {

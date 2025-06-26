@@ -23,28 +23,27 @@ document.querySelector(".buyer-form").addEventListener("submit", async function 
 
   // 2. 서버에 로그인 요청
   try {
+    const formData = new URLSearchParams();
+    formData.append('email', email);
+    formData.append('password', password);
+
     const response = await fetch('/buyer/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: JSON.stringify({ email, password })
+      body: formData
     });
 
-    if (response.ok) {
-      const result = await response.json();
-      if (result.success) {
-        alert('로그인 성공! 메인 페이지로 이동합니다.');
-        window.location.href = '/';
-      } else {
-        alert('로그인 실패: ' + result.message);
-      }
+    if (response.ok && response.redirected) {
+      window.location.href = response.url;
     } else {
-      const result = await response.json();
-      alert('로그인 실패: ' + result.message);
+      alert("이메일 또는 비밀번호가 일치하지 않습니다.");
+      // 로그인 실패 시 현재 페이지에 머무르거나 로그인 페이지로 다시 이동
+      // window.location.href = '/buyer/login';
     }
   } catch (err) {
     alert("로그인 처리 중 오류가 발생했습니다.");
+    console.error(err);
   }
 });

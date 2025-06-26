@@ -41,6 +41,17 @@ button {
   transition: all 0.2s;
 }
 
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.button-group button {
+  width: 150px;
+  margin: 0;
+}
+
 button:hover {
   background-color: #94A687;
   color: #F5F4ED;

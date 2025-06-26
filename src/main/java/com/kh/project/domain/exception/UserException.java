@@ -3,11 +3,11 @@ package com.kh.project.domain.exception;
 import com.kh.project.domain.common.ApiResponseCode;
 
 /**
- * 사용자 관련 예외를 모아놓은 컨테이너 클래스
+ * 사용자 관련 예외
  */
 public class UserException extends BusinessException {
   /**
-   * 부모 생성자. 중첩 클래스에서 호출하여 상태 코드와 메시지를 설정합니다.
+   * 부모 생성자. 중첩 클래스에서 호출하여 상태 코드와 메시지 설정
    * @param responseCode 응답 코드 Enum
    * @param message 응답 메시지
    */
