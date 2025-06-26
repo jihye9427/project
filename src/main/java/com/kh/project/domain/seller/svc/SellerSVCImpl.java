@@ -1,6 +1,8 @@
 package com.kh.project.domain.seller.svc;
 
+import com.kh.project.domain.common.ApiResponseCode;
 import com.kh.project.domain.exception.BusinessException;
+import com.kh.project.domain.exception.UserException;
 import com.kh.project.domain.seller.dao.SellerDAO;
 import com.kh.project.domain.seller.entity.Seller;
 import lombok.RequiredArgsConstructor;
@@ -18,17 +20,18 @@ public class SellerSVCImpl implements SellerSVC {
 
   @Override
   public Seller join(Seller seller) {
-    if (sellerDAO.isExistEmail(seller.getEmail())) {
-      throw new BusinessException("이미 사용중인 이메일입니다.");
+    if (sellerDAO.existsByEmail(seller.getEmail())) {
+      throw new BusinessException(ApiResponseCode.USER_ALREADY_EXISTS);
     }
     return sellerDAO.save(seller);
   }
 
   @Override
   @Transactional(readOnly = true)
-  public Optional<Seller> login(String email, String password) {
+  public Seller login(String email, String password) {
     return sellerDAO.findByEmail(email)
-        .filter(seller -> seller.getPassword().equals(password));
+        .filter(seller -> seller.getPassword().equals(password))
+        .orElseThrow(() -> new UserException.LoginFailed("아이디 또는 비밀번호가 일치하지 않습니다."));
   }
 
   @Override
@@ -50,7 +53,7 @@ public class SellerSVCImpl implements SellerSVC {
   @Override
   @Transactional(readOnly = true)
   public boolean isExistEmail(String email) {
-    return sellerDAO.isExistEmail(email);
+    return sellerDAO.existsByEmail(email);
   }
 
   @Override

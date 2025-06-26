@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("email").addEventListener("input", validateEmail);
   document.getElementById("password").addEventListener("input", validatePassword);
   document.getElementById("password2").addEventListener("input", validatePasswordMatch);
-  document.getElementById("gender").addEventListener("change", validateGender);
   document.getElementById("birth").addEventListener("change", validateBirth);
   document.getElementById("address").addEventListener("input", validateAddress);
 
@@ -88,17 +87,16 @@ function validateTel() {
     ? ""
     : "전화번호를 입력하여야 합니다.";
 }
-// 성별
-function validateGender() {
-  const gender = document.getElementById("gender").value;
-  const error = document.getElementById("error-gender");
-  error.textContent = !gender ? "성별을 선택해주세요." : "";
-}
 // 생년월일
 function validateBirth() {
   const birth = document.getElementById("birth").value;
   const error = document.getElementById("error-birth");
   error.textContent = !birth ? "생년월일을 입력해주세요." : "";
+  validatePassword();
+  validatePasswordMatch();
+  validateTel();
+  validateBirth();
+  validateAddress();
 }
 // 주소
 function validateAddress() {
@@ -119,13 +117,15 @@ document.getElementById("buyer-signup-form").addEventListener("submit", async fu
   validatePassword();
   validatePasswordMatch();
   validateTel();
-  validateGender();
   validateBirth();
   validateAddress();
 
   const hasError = Array.from(document.querySelectorAll(".error-msg"))
     .some(div => div.textContent !== "");
   if (hasError) return;
+
+  // [수정] 선택된 성별 값을 가져옴
+  const selectedGender = document.querySelector('input[name="gender"]:checked').value;
 
   // 서버에 보낼 데이터 구성
   const formData = {
@@ -134,7 +134,7 @@ document.getElementById("buyer-signup-form").addEventListener("submit", async fu
     email: this.email.value.trim(),
     password: this.password.value,
     tel: this.tel.value.trim(),
-    gender: this.gender.value,
+    gender: selectedGender,
     birth: this.birth.value,
     address: this.address.value.trim()
   };

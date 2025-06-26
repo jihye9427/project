@@ -2,7 +2,9 @@ package com.kh.project.domain.buyer.svc;
 
 import com.kh.project.domain.buyer.dao.BuyerDAO;
 import com.kh.project.domain.buyer.entity.Buyer;
+import com.kh.project.domain.common.ApiResponseCode;
 import com.kh.project.domain.exception.BusinessException;
+import com.kh.project.domain.exception.UserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,21 +20,18 @@ public class BuyerSVCImpl implements BuyerSVC {
 
     @Override
     public Buyer join(Buyer buyer) {
-        if (buyerDAO.isExistEmail(buyer.getEmail())) {
-            throw new BusinessException("이미 사용중인 이메일입니다.");
+        if (buyerDAO.existsByEmail(buyer.getEmail())) {
+            throw new BusinessException(ApiResponseCode.USER_ALREADY_EXISTS);
         }
         return buyerDAO.save(buyer);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Buyer> login(String email, String password) {
-        Optional<Buyer> optionalBuyer = buyerDAO.findByEmail(email);
-
-        if (optionalBuyer.isEmpty() || !optionalBuyer.get().getPassword().equals(password)) {
-            return Optional.empty();
-        }
-        return optionalBuyer;
+    public Buyer login(String email, String password) throws UserException.LoginFailed {
+        return buyerDAO.findByEmail(email)
+            .filter(buyer -> buyer.getPassword().equals(password))
+            .orElseThrow(() -> new UserException.LoginFailed("아이디 또는 비밀번호가 일치하지 않습니다."));
     }
 
     @Override
@@ -54,7 +53,7 @@ public class BuyerSVCImpl implements BuyerSVC {
     @Override
     @Transactional(readOnly = true)
     public boolean isExistEmail(String email) {
-        return buyerDAO.isExistEmail(email);
+        return buyerDAO.existsByEmail(email);
     }
 
     @Override
