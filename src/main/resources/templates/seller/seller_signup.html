@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>판매자 회원가입</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<!-- 🏠 홈으로 이동 버튼 -->
+<a th:href="@{/home}" class="home-button">홈으로</a>
+
+<!-- 🛍️ 판매자 회원가입 폼 -->
+<form id="seller-signup-form" class="seller-form" th:action="@{/seller/signup}" method="post">
+  <h2>판매자 회원가입</h2>
+
+  <!-- 이메일 -->
+  <div class="form-row">
+    <label for="email">이메일</label>
+    <div class="input-col">
+      <input type="email" id="email" name="email" placeholder="이메일 입력" required />
+      <div class="error-msg" id="error-email"></div>
+    </div>
+  </div>
+
+  <!-- 비밀번호 -->
+  <div class="form-row">
+    <label for="password">비밀번호</label>
+    <div class="input-col">
+      <input type="password" id="password" name="password" placeholder="비밀번호 입력" required />
+      <div class="error-msg" id="error-password"></div>
+    </div>
+  </div>
+
+  <!-- 비밀번호 확인 -->
+  <div class="form-row">
+    <label for="password2">비밀번호 확인</label>
+    <div class="input-col">
+      <input type="password" id="password2" name="password2" placeholder="비밀번호 다시 입력" required />
+      <div class="error-msg" id="error-password2"></div>
+    </div>
+  </div>
+
+  <!-- 사업자등록번호 -->
+  <div class="form-row">
+    <label for="bizreg">사업자등록번호</label>
+    <div class="input-col">
+      <input type="text" id="bizreg" name="bizreg" maxlength="13" placeholder="000-00-00000" required />
+      <div class="error-msg" id="error-bizreg"></div>
+    </div>
+  </div>
+
+  <!-- 상호명 -->
+  <div class="form-row">
+    <label for="shopname">상호명</label>
+    <div class="input-col">
+      <input type="text" id="shopname" name="shopname" placeholder="상호명 입력" required />
+      <div class="error-msg" id="error-shopname"></div>
+    </div>
+  </div>
+
+  <!-- 대표자 이름 -->
+  <div class="form-row">
+    <label for="name">이름</label>
+    <div class="input-col">
+      <input type="text" id="name" name="name" placeholder="대표자 이름 입력" required />
+      <div class="error-msg" id="error-name"></div>
+    </div>
+  </div>
+
+  <!-- 가게 주소 -->
+  <div class="form-row">
+    <label for="shopaddress">가게 주소</label>
+    <div class="input-col">
+      <input type="text" id="shopaddress" name="shopaddress" placeholder="가게 주소 입력" required />
+      <div class="error-msg" id="error-shopaddress"></div>
+    </div>
+  </div>
+
+  <!-- 전화번호 -->
+  <div class="form-row">
+    <label for="tel">전화번호</label>
+    <div class="input-col">
+      <input type="text" id="tel" name="tel" maxlength="13" placeholder="010-1234-5678" required />
+      <div class="error-msg" id="error-tel"></div>
+    </div>
+  </div>
+
+  <!-- 생년월일 -->
+  <div class="form-row">
+    <label for="birth">생년월일</label>
+    <div class="input-col">
+      <input type="date" id="birth" name="birth" required />
+      <div class="error-msg" id="error-birth"></div>
+    </div>
+  </div>
+
+  <!-- ▶ 회원가입 버튼 -->
+  <button type="submit">회원가입</button>
+</form>
+
+<!-- 📜 유효성 검사 스크립트 -->
+<script th:src="@{/js/seller/seller_signup.js}"></script>
+</body>
+</html>

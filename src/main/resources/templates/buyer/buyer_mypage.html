@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>구매자 마이페이지</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<a th:href="@{/}" class="home-button">🏠 홈으로</a>
+<div class="container mypage-container">
+    <h2 id="welcome-message" class="welcome-message">안녕하세요! 구매자님</h2>
+    <div class="mypage-menu">
+        <button id="update-info-btn" class="btn-primary">회원정보 수정</button>
+        <button id="leave-btn" class="btn-danger">회원 탈퇴</button>
+        <button id="logout-btn" class="btn-secondary">로그아웃</button>
+    </div>
+</div>
+<a th:href="@{/}">메인 페이지로 돌아가기</a>
+
+<script th:src="@{/js/buyer/mypage.js}"></script>
+</body>
+</html>

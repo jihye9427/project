@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>구매자 회원 탈퇴</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<a th:href="@{/}" class="home-button">🏠 홈으로</a>
+
+<form id="buyer-leave-form" class="buyer-form">
+    <h2>회원 탈퇴</h2>
+    <p style="text-align: center; color: #555;">
+        회원 탈퇴를 원하시면, 본인 확인을 위해 비밀번호를 입력해주세요.<br>
+    </p>
+
+    <div class="form-row">
+        <label for="password">비밀번호</label>
+        <input type="password" id="password" name="password" placeholder="비밀번호 입력" required />
+    </div>
+
+    <div class="button-group">
+        <button type="submit" id="leave-btn" class="btn-danger">회원 탈퇴</button>
+        <button type="button" id="cancel-btn" class="btn-secondary">취소</button>
+    </div>
+</form>
+
+<script th:src="@{/static/js/buyer_leave.js}"></script>
+</body>
+</html> 

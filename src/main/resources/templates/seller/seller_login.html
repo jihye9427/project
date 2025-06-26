@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>판매자 로그인</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<!-- 🏠 홈으로 이동 버튼 -->
+<a th:href="@{/home}" class="home-button">홈으로</a>
+
+<!-- 🛒 판매자 로그인 폼 -->
+<form class="seller-form" th:action="@{/seller/login}" method="post">
+  <h2>판매자 로그인</h2>
+
+  <!-- 이메일 -->
+  <div class="form-row">
+    <label for="email">이메일</label>
+    <div class="input-col">
+      <input type="email" id="email" name="email" placeholder="이메일 입력" required />
+    </div>
+  </div>
+
+  <!-- 비밀번호 -->
+  <div class="form-row">
+    <label for="password">비밀번호</label>
+    <div class="input-col">
+      <input type="password" id="password" name="password" placeholder="비밀번호 입력" required />
+    </div>
+  </div>
+
+  <!-- 로그인 버튼 -->
+  <button type="submit">로그인</button>
+</form>
+
+<script th:src="@{/js/seller/seller_login.js}"></script>
+</body>
+</html>

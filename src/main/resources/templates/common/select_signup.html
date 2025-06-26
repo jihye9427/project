@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원가입 유형 선택</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+
+<!-- 🏠 홈으로 이동 버튼 -->
+<a href="/" class="home-button">🏠 홈으로</a>
+
+<!-- 👥 회원가입 유형 선택 컨테이너 -->
+<div class="container">
+  <h2>회원가입할 계정을 선택하세요</h2>
+
+  <!-- 구매자 회원가입 이동 -->
+  <button onclick="location.href='/page/buyer/signup'">구매자 회원가입</button>
+
+  <!-- 판매자 회원가입 이동 -->
+  <button onclick="location.href='/page/seller/signup'">판매자 회원가입</button>
+</div>
+
+</body>
+</html>
