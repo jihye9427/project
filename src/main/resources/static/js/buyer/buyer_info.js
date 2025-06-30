@@ -20,7 +20,7 @@ function confirmDelete() {
       .then(res => {
         if (res.ok) {
           alert('탈퇴가 완료되었습니다.');
-          window.location.href = '/home';
+          window.location.href = '/';
         } else {
           alert('탈퇴에 실패했습니다.');
         }
@@ -30,4 +30,36 @@ function confirmDelete() {
         console.error(err);
       });
   }
+}
+
+function updateInfo() {
+  // 회원정보 수정 로직을 구현해야 합니다.
+  // 이 함수는 회원정보 수정 후 호출될 예정입니다.
+  // 현재는 빈 함수로 남겨두었습니다.
+}
+
+function updateInfoSubmit(event) {
+  event.preventDefault();
+  updateInfo();
+}
+
+function updateInfoForm() {
+  // 회원정보 수정 폼을 표시하는 로직을 구현해야 합니다.
+  // 이 함수는 회원정보 수정 폼을 표시할 때 호출될 예정입니다.
+  // 현재는 빈 함수로 남겨두었습니다.
+}
+
+function updateInfoFormSubmit(event) {
+  event.preventDefault();
+  updateInfoForm();
+}
+
+function updateInfoFormReset() {
+  // 회원정보 수정 폼을 초기화하는 로직을 구현해야 합니다.
+  // 이 함수는 회원정보 수정 폼을 초기화할 때 호출될 예정입니다.
+  // 현재는 빈 함수로 남겨두었습니다.
+}
+
+function updateInfoFormResetSubmit() {
+  updateInfoFormReset();
 }

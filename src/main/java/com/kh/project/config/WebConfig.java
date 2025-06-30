@@ -3,6 +3,9 @@ package com.kh.project.config;
 import com.kh.project.web.interceptor.AuthInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -39,23 +42,48 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        // 공용 페이지
+        // 공용 페이지 - 여러 패턴 지원
         registry.addViewController("/").setViewName("home");
         registry.addViewController("/home").setViewName("home");
+        registry.addViewController("/index").setViewName("home");
+
+        // 로그인/회원가입 선택 페이지
         registry.addViewController("/login").setViewName("common/select_login");
         registry.addViewController("/signup").setViewName("common/select_signup");
 
-        // 구매자 폼 페이지
+        // 구매자 페이지들
         registry.addViewController("/buyer/login").setViewName("buyer/buyer_login");
         registry.addViewController("/buyer/signup").setViewName("buyer/buyer_signup");
         registry.addViewController("/buyer/mypage").setViewName("buyer/buyer_mypage");
         registry.addViewController("/buyer/leave").setViewName("buyer/buyer_leave");
 
-        // 판매자 폼 페이지
+        // 판매자 페이지들
         registry.addViewController("/seller/login").setViewName("seller/seller_login");
         registry.addViewController("/seller/signup").setViewName("seller/seller_signup");
         registry.addViewController("/seller/mypage").setViewName("seller/seller_mypage");
         registry.addViewController("/seller/leave").setViewName("seller/seller_leave");
+    }
+
+    /**
+     * html 확장자 요청 처리
+     */
+    @Controller
+    public class ViewMappingController {
+
+        @GetMapping("/common/select_login.html")
+        public String selectLogin() {
+            return "common/select_login";
+        }
+
+        @GetMapping("/common/select_signup.html")
+        public String selectSignup() {
+            return "common/select_signup";
+        }
+
+        @GetMapping("/{module}/{page}.html")
+        public String handleHtmlRequests(@PathVariable String module, @PathVariable String page) {
+            return String.format("%s/%s_%s", module, module, page);
+        }
     }
 
     // 인터셉터 설정은 필요 시 주석 해제 후 사용

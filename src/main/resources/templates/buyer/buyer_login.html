@@ -10,8 +10,8 @@
 <body>
 
 <!-- 🏠 홈으로 이동 버튼 -->
-<a th:href="@{/home}"><img src="../../static/images/free-icon-sprout-7101338.png" alt="홈으로" style="width:48px;height:48px;margin:20px 0 0 20px;position:fixed;left:20px;top:20px;z-index:100;"></a>
-<a href="../home.html"><img src="../../static/images/free-icon-sprout-7101338.png" alt="홈으로" style="width:48px;height:48px;margin:20px 0 0 20px;position:fixed;left:20px;top:20px;z-index:100;"></a>
+<a th:href="@{/}"><img th:src="@{/images/free-icon-sprout-7101338.png}" alt="홈으로" style="width:48px;height:48px;margin:20px 0 0 20px;position:fixed;left:20px;top:20px;z-index:100;"></a>
+<a href="/"><img src="/images/free-icon-sprout-7101338.png" alt="홈으로" style="width:48px;height:48px;margin:20px 0 0 20px;position:fixed;left:20px;top:20px;z-index:100;"></a>
 
 <!-- 👤 구매자 로그인 폼 -->
 <form class="buyer-form" th:action="@{/buyer/login}" method="post">
@@ -21,7 +21,7 @@
   <div class="form-row">
     <label for="email">이메일</label>
     <div class="input-col">
-      <input type="email" id="email" name="email" placeholder="이메일 입력" required />
+      <input type="email" id="email" name="email" placeholder="이메일 입력" autocomplete="email" required />
     </div>
   </div>
 
@@ -29,7 +29,7 @@
   <div class="form-row">
     <label for="password">비밀번호</label>
     <div class="input-col">
-      <input type="password" id="password" name="password" placeholder="비밀번호 입력" required />
+      <input type="password" id="password" name="password" placeholder="비밀번호 입력" autocomplete="current-password" required />
     </div>
   </div>
 

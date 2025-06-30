@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @Slf4j
-@RestController
+@RestController("buyerApiController")
 @RequiredArgsConstructor
 @RequestMapping("/api/buyers")
-public class BuyerApiController {
+public class BuyerController {
     private final BuyerSVC buyerSVC;
     public static final String LOGIN_BUYER = "loginBuyer";
 
@@ -29,30 +29,28 @@ public class BuyerApiController {
     public ApiResponse<Object> join(@Valid @RequestBody BuyerDTO.JoinRequest joinReq) {
         try {
             log.info("구매자 회원가입 시도: {}", joinReq.getEmail());
-
+            
             Buyer buyer = new Buyer();
             BeanUtils.copyProperties(joinReq, buyer);
-            buyer.setStatus("활성");  // 기본값 설정
-            buyer.setGubun("M0101"); // 기본값 설정
-
+            buyer.setStatus("활성");
+            buyer.setGubun("M0101");
+            
             Buyer joinedBuyer = buyerSVC.join(buyer);
 
-            // 프론트엔드에 전달할 데이터 구성
             BuyerDTO.JoinResponse res = new BuyerDTO.JoinResponse(
-                joinedBuyer.getBuyerId(),
-                joinedBuyer.getEmail(),
+                joinedBuyer.getBuyerId(), 
+                joinedBuyer.getEmail(), 
                 joinedBuyer.getName()
             );
-
+            
             log.info("구매자 회원가입 성공: {}", joinedBuyer.getBuyerId());
             return ApiResponse.create("0", "회원가입이 완료되었습니다.", res);
-
+            
         } catch (Exception e) {
             log.error("구매자 회원가입 실패: {}", e.getMessage());
-            return ApiResponse.create("E001", e.getMessage());
+            return ApiResponse.create("B001", e.getMessage());
         }
     }
-
 
     /**
      * 로그인 처리 API
@@ -61,24 +59,23 @@ public class BuyerApiController {
     public ApiResponse<Object> login(@Valid @RequestBody LoginDTO loginDTO, HttpServletRequest request) {
         try {
             log.info("구매자 로그인 시도: {}", loginDTO.getEmail());
-
-            // 이메일, 비밀번호로 회원 검증
+            
             Optional<Buyer> optionalBuyer = buyerSVC.login(loginDTO.getEmail(), loginDTO.getPassword());
             if (optionalBuyer.isEmpty()) {
                 log.warn("구매자 로그인 실패: {}", loginDTO.getEmail());
                 return ApiResponse.create("M0102", "아이디 또는 비밀번호가 일치하지 않습니다.");
             }
 
-            // 세션 생성 및 회원 정보 저장
             HttpSession session = request.getSession(true);
-            session.setAttribute(LOGIN_BUYER, optionalBuyer.get());
+            session.setAttribute("loginUser", optionalBuyer.get());
+            session.setAttribute("userType", "buyer");
 
             log.info("구매자 로그인 성공: {}", optionalBuyer.get().getBuyerId());
             return ApiResponse.create("0", "로그인이 완료되었습니다.");
-
+            
         } catch (Exception e) {
             log.error("구매자 로그인 중 오류: {}", e.getMessage());
-            return ApiResponse.create("E002", "로그인 처리 중 오류가 발생했습니다.");
+            return ApiResponse.create("B002", "로그인 처리 중 오류가 발생했습니다.");
         }
     }
 

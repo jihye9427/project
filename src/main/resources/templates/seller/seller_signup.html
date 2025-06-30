@@ -10,8 +10,8 @@
 <body>
 
 <!-- 🏠 홈으로 이동 버튼 -->
-<a th:href="@{/home}"><img src="../../static/images/free-icon-sprout-7101338.png" alt="홈으로" style="width:48px;height:48px;margin:20px 0 0 20px;position:fixed;left:20px;top:20px;z-index:100;"></a>
-<a href="../home.html"><img src="../../static/images/free-icon-sprout-7101338.png" alt="홈으로" style="width:48px;height:48px;margin:20px 0 0 20px;position:fixed;left:20px;top:20px;z-index:100;"></a>
+<a th:href="@{/}"><img th:src="@{/images/free-icon-sprout-7101338.png}" alt="홈으로" style="width:48px;height:48px;margin:20px 0 0 20px;position:fixed;left:20px;top:20px;z-index:100;"></a>
+<a href="/"><img src="/images/free-icon-sprout-7101338.png" alt="홈으로" style="width:48px;height:48px;margin:20px 0 0 20px;position:fixed;left:20px;top:20px;z-index:100;"></a>
 
 <!-- 🛍️ 판매자 회원가입 폼 -->
 <form id="seller-signup-form" class="seller-form" th:action="@{/seller/signup}" method="post">

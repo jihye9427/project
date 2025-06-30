@@ -4,25 +4,21 @@ import com.kh.project.domain.common.ApiResponse;
 import com.kh.project.domain.common.LoginDTO;
 import com.kh.project.domain.seller.entity.Seller;
 import com.kh.project.domain.seller.svc.SellerSVC;
-import com.kh.project.web.api.seller.SellerDTO.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
 @Slf4j
-@RestController
+@RestController("sellerController")
 @RequiredArgsConstructor
 @RequestMapping("/api/sellers")
-public class SellerApiController {
+public class SellerController {
     private final SellerSVC sellerSVC;
     public static final String LOGIN_SELLER = "loginSeller";
 
@@ -48,7 +44,7 @@ public class SellerApiController {
 
         } catch (Exception e) {
             log.error("판매자 회원가입 실패: {}", e.getMessage());
-            return ApiResponse.create("E001", e.getMessage());
+            return ApiResponse.create("S001", e.getMessage());
         }
     }
 
@@ -67,14 +63,15 @@ public class SellerApiController {
             }
 
             HttpSession session = request.getSession(true);
-            session.setAttribute(LOGIN_SELLER, optionalSeller.get());
+            session.setAttribute("loginUser", optionalSeller.get());
+            session.setAttribute("userType", "seller");
 
             log.info("판매자 로그인 성공: {}", optionalSeller.get().getSellerId());
             return ApiResponse.create("0", "로그인이 완료되었습니다.");
 
         } catch (Exception e) {
             log.error("판매자 로그인 중 오류: {}", e.getMessage());
-            return ApiResponse.create("E002", "로그인 처리 중 오류가 발생했습니다.");
+            return ApiResponse.create("S002", "로그인 처리 중 오류가 발생했습니다.");
         }
     }
 
@@ -95,7 +92,7 @@ public class SellerApiController {
 
         } catch (Exception e) {
             log.error("판매자 로그아웃 중 오류: {}", e.getMessage());
-            return ApiResponse.create("E003", "로그아웃 처리 중 오류가 발생했습니다.");
+            return ApiResponse.create("S003", "로그아웃 처리 중 오류가 발생했습니다.");
         }
     }
 
@@ -130,7 +127,7 @@ public class SellerApiController {
 
         } catch (Exception e) {
             log.error("이메일 중복 체크 실패: {}", e.getMessage());
-            return ApiResponse.create("E007", "이메일 중복 체크 중 오류가 발생했습니다.");
+            return ApiResponse.create("S007", "이메일 중복 체크 중 오류가 발생했습니다.");
         }
     }
 
@@ -157,7 +154,7 @@ public class SellerApiController {
 
         } catch (Exception e) {
             log.error("판매자 정보 조회 실패: {}", e.getMessage());
-            return ApiResponse.create("E004", "회원정보 조회 중 오류가 발생했습니다.");
+            return ApiResponse.create("S004", "회원정보 조회 중 오류가 발생했습니다.");
         }
     }
 
@@ -200,7 +197,7 @@ public class SellerApiController {
 
         } catch (Exception e) {
             log.error("판매자 정보 수정 실패: {}", e.getMessage());
-            return ApiResponse.create("E005", "회원정보 수정 중 오류가 발생했습니다.");
+            return ApiResponse.create("S005", "회원정보 수정 중 오류가 발생했습니다.");
         }
     }
 
@@ -233,7 +230,7 @@ public class SellerApiController {
 
         } catch (Exception e) {
             log.error("판매자 탈퇴 실패: {}", e.getMessage());
-            return ApiResponse.create("E006", "회원탈퇴 처리 중 오류가 발생했습니다.");
+            return ApiResponse.create("S006", "회원탈퇴 처리 중 오류가 발생했습니다.");
         }
     }
-}
+} 

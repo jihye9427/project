@@ -1,32 +1,28 @@
-// ✅ 판매자 로그인 폼 제출 처리
 document.querySelector(".seller-form").addEventListener("submit", function (e) {
-  e.preventDefault(); // 기본 제출 동작 차단
+  e.preventDefault();
 
-  // 입력값 수집
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
 
-  // 1. 유효성 검사
+  // 유효성 검사
   if (!email || !password) {
     alert("이메일과 비밀번호를 모두 입력하세요.");
     return;
   }
 
-  // ✅ 2. 이메일 형식 검사
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
     alert("올바른 이메일 형식이 아닙니다.");
     return;
   }
 
-  // ✅ 3. 비밀번호 길이 검사
   if (password.length < 4) {
     alert("비밀번호는 최소 4자 이상이어야 합니다.");
     return;
   }
 
-  // ✅ 4. 서버에 로그인 요청
-  fetch("/seller/login", {
+  // 판매자 API 호출
+  fetch("/api/sellers/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -34,16 +30,24 @@ document.querySelector(".seller-form").addEventListener("submit", function (e) {
     body: JSON.stringify({ email, password })
   })
     .then(res => {
-      if (res.redirected) {
-        window.location.href = res.url;
-      } else if (res.ok) {
+      console.log("응답 상태:", res.status);
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      return res.json();
+    })
+    .then(data => {
+      console.log("서버 응답:", data);
+
+      if (data.success === true && data.errorCode === 0) {
         alert("판매자 로그인 성공! 메인페이지로 이동합니다.");
-        window.location.href = "/home";
+        window.location.href = "/";
       } else {
-        return res.text().then(msg => { throw new Error(msg); });
+        alert("로그인 실패: " + (data.message || "알 수 없는 오류"));
       }
     })
     .catch(err => {
-      alert("로그인 실패: " + err.message);
+      console.error("로그인 오류:", err);
+      alert("로그인 처리 중 오류가 발생했습니다.");
     });
 });

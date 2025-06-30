@@ -332,8 +332,8 @@
         <a href="#" class="thq-link">스토어</a>
       </nav>
       <div class="navbar8-buttons1">
-        <button class="thq-button-outline" onclick="location.href='common/select_login.html'">로그인</button>
-        <button class="thq-button-filled" onclick="location.href='common/select_signup.html'">회원가입</button>
+        <button class="thq-button-outline" onclick="location.href='/login'">로그인</button>
+        <button class="thq-button-filled" onclick="location.href='/signup'">회원가입</button>
       </div>
     </div>
   </header>
@@ -345,7 +345,7 @@
         <p class="thq-body-large">농사를 즐겁게, 소비를 이롭게</p>
       </div>
       <div class="hero17-actions">
-        <button class="thq-button-filled">회원 가입</button>
+        <button class="thq-button-filled" onclick="location.href='/signup'">회원가입</button>
         <button class="thq-button-outline">자세히 보기</button>
       </div>
     </div>
@@ -483,6 +483,8 @@
       </div>
     </div>
   </footer>
+  <script th:src="@{/js/common/modal.js}"></script>
+  <script th:src="@{/js/common/auth.js}"></script>
   <script>
     // posts 데이터는 실제 API에서 받아오도록 교체 가능
     // {id, title, imageUrl}

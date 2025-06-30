@@ -4,7 +4,6 @@ import com.kh.project.domain.buyer.dao.BuyerDAO;
 import com.kh.project.domain.buyer.entity.Buyer;
 import com.kh.project.domain.common.ApiResponseCode;
 import com.kh.project.domain.exception.BusinessException;
-import com.kh.project.domain.exception.UserException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -40,38 +39,27 @@ public class BuyerSVCImpl implements BuyerSVC {
 
         if (email == null || password == null || email.trim().isEmpty() || password.trim().isEmpty()) {
             log.warn("이메일 또는 비밀번호가 비어있습니다.");
-            return Optional.empty(); // 실패 시 빈 Optional 반환
+            return Optional.empty();
         }
 
         String cleanEmail = email.trim();
         String cleanPassword = password.trim();
 
-        // findByEmail의 결과가 Optional이므로, 함수형 스타일로 처리
+        // findByEmail 메소드 사용 후 비밀번호 및 상태 체크
         return buyerDAO.findByEmail(cleanEmail)
-            .map(buyer -> {
-                // 비밀번호 확인
+            .filter(buyer -> {
                 if (!buyer.getPassword().equals(cleanPassword)) {
                     log.warn("비밀번호 불일치: {}", cleanEmail);
-                    return null; // filter에서 걸러짐
+                    return false;
                 }
-                // 계정 상태 확인
-                if (!buyer.canLogin()) {
-                    // 구체적인 상태별 로깅
-                    if (buyer.isWithdrawn()) {
-                        log.warn("탈퇴한 회원 로그인 시도: {}", cleanEmail);
-                    } else if (buyer.isSuspended()) {
-                        log.warn("정지된 계정 로그인 시도: {}", cleanEmail);
-                    } else if (buyer.isDormant()) {
-                        log.warn("휴면 계정 로그인 시도: {}", cleanEmail);
-                    } else {
-                        log.warn("비활성 계정 로그인 시도: {} (상태: {})", cleanEmail, buyer.getStatus());
-                    }
-                    return null; // filter에서 걸러짐
-                }
+                // 엔티티에 canLogin() 같은 상태 확인 메소드가 있다고 가정
+                // if (!buyer.canLogin()) {
+                //    log.warn("로그인 불가 상태: {}", cleanEmail);
+                //    return false;
+                // }
                 log.info("구매자 로그인 성공: {}", buyer.getBuyerId());
-                return buyer;
-            })
-            .filter(buyer -> buyer != null);
+                return true;
+            });
     }
 
     @Override

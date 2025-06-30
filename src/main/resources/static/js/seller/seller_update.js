@@ -1,12 +1,10 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // 버튼 요소
+document.addEventListener('DOMContentLoaded', async () => {
     const editBtn = document.getElementById('edit-btn');
     const saveBtn = document.getElementById('save-btn');
     const cancelBtn = document.getElementById('cancel-btn');
     const leaveBtn = document.getElementById('leave-btn');
-
-    // 폼 및 필드 요소
     const form = document.getElementById('seller-update-form');
+
     const editableFields = {
         shopName: document.getElementById('shopName'),
         name: document.getElementById('name'),
@@ -23,11 +21,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let initialFormState = {};
 
+    // 초기 판매자 정보 로드
+    try {
+        const response = await fetch('/api/sellers/info');
+        const result = await response.json();
+
+        if (result.success || result.code === "0") {
+            const seller = result.data;
+            document.getElementById('email').value = seller.email || '';
+            document.getElementById('bizRegNo').value = seller.bizRegNo || '';
+            editableFields.shopName.value = seller.shopName || '';
+            editableFields.name.value = seller.name || '';
+            editableFields.shopAddress.value = seller.shopAddress || '';
+            editableFields.tel.value = seller.tel || '';
+        } else {
+            throw new Error(result.message || "판매자 정보를 불러올 수 없습니다.");
+        }
+    } catch (error) {
+        console.error('판매자 정보 로드 오류:', error);
+        alert('판매자 정보를 불러오는 중 오류가 발생했습니다.');
+        window.location.href = '/seller/login';
+    }
+
     // 수정 버튼 클릭 이벤트
     editBtn.addEventListener('click', () => {
         // 현재 폼 상태 저장
         for (const key in editableFields) {
-            initialFormState[key] = editableFields[key].value;
+            if (editableFields[key]) {
+                initialFormState[key] = editableFields[key].value;
+            }
         }
 
         // '수정 모드'로 전환
@@ -49,9 +71,11 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.reload();
     });
 
-    // 폼 제출 전 유효성 검사
+    // 폼 제출 처리
     if (form) {
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
             // 1. 변경 사항이 있는지 확인
             let isChanged = false;
             for (const key in editableFields) {
@@ -60,20 +84,50 @@ document.addEventListener('DOMContentLoaded', () => {
                     break;
                 }
             }
-            
+
             // 2. 현재 비밀번호가 입력되었는지 확인
             const currentPasswordInput = document.getElementById('currentPassword');
             if (!currentPasswordInput.value) {
                 alert('정보를 수정하려면 현재 비밀번호를 입력해야 합니다.');
-                e.preventDefault();
                 return;
             }
 
             // 3. 변경 사항이 없으면 제출 막기
             if (!isChanged) {
                 alert('변경된 내용이 없습니다.');
-                e.preventDefault();
+                return;
+            }
+
+            // 4. 서버에 수정 요청
+            try {
+                const updateData = {
+                    shopName: editableFields.shopName.value.trim(),
+                    name: editableFields.name.value.trim(),
+                    shopAddress: editableFields.shopAddress.value.trim(),
+                    tel: editableFields.tel.value.trim(),
+                    currentPassword: currentPasswordInput.value
+                };
+
+                const response = await fetch('/api/sellers/info', {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updateData)
+                });
+
+                const result = await response.json();
+
+                if (result.rtcd === "0") {
+                    alert('판매자 정보가 수정되었습니다.');
+                    window.location.reload();
+                } else {
+                    throw new Error(result.rtmsg || "정보 수정에 실패했습니다.");
+                }
+            } catch (error) {
+                console.error('정보 수정 오류:', error);
+                alert('정보 수정 실패: ' + error.message);
             }
         });
     }
-}); 
+});

@@ -6,12 +6,11 @@ function logout() {
       "X-Requested-With": "XMLHttpRequest"
     }
   })
-    .then(res => {
-      if (res.redirected) {
-        window.location.href = res.url;
+    .then(response => {
+      if(response.ok) {
+        window.location.href = "/";
       } else {
-        alert("로그아웃 되었습니다.");
-        window.location.href = "/home";
+        throw new Error('로그아웃 실패');
       }
     })
     .catch(err => {

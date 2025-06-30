@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /*grow (컨테이너)여유공간 비율설정으로 노나먹기(각자 가진 크기에서 덤으로)
+        shrink (컨테이너)여유공간이 없을때 비율설정해서 비율만큼 작아지기기*/
+        *{
+            outline:  1px solid red;
+        }
+        .container{
+            background-color: yellow;
+            display: flex;
+        }
+        .container .item {
+            background-color: yellowgreen;
+           
+        }
+        .container .item.item1{
+            flex-grow: 1;
+        }
+        .container .item.item2{
+            flex-grow: 2;
+        }
+        .container .item.item3{
+            flex-grow: 1;
+        }
+       
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="item item1">item1</div>
+        <div class="item item2">item2</div>
+        <div class="item item3">item3</div>
+    </div>
+</body>
+</html>

@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>회원가입 유형 선택</title>
   <link rel="stylesheet" th:href="@{/css/style.css}">
-  <link rel="stylesheet" href="../../static/css/style.css" />
   <style>
     .container h2 {
       font-size: 2.8rem;
@@ -60,9 +59,9 @@
 </head>
 <body>
 
-<!-- 🏠 홈으로 이동 버튼 -->
-<a th:href="@{/home}"><img src="../../static/images/free-icon-sprout-7101338.png" alt="홈으로" style="width:48px;height:48px;margin:20px 0 0 20px;position:fixed;left:20px;top:20px;z-index:100;"></a>
-<a href="../home.html"><img src="../../static/images/free-icon-sprout-7101338.png" alt="홈으로" style="width:48px;height:48px;margin:20px 0 0 20px;position:fixed;left:20px;top:20px;z-index:100;"></a>
+<!-- 🏠 홈으로 이동 버튼 (수정된 부분) -->
+<a th:href="@{/}"><img th:src="@{/images/free-icon-sprout-7101338.png}" alt="홈으로" style="width:48px;height:48px;margin:20px 0 0 20px;position:fixed;left:20px;top:20px;z-index:100;"></a>
+<a href="/"><img src="/images/free-icon-sprout-7101338.png" alt="홈으로" style="width:48px;height:48px;margin:20px 0 0 20px;position:fixed;left:20px;top:20px;z-index:100;"></a>
 
 <!-- 👥 회원가입 유형 선택 컨테이너 -->
 <div class="container" style="text-align: center; margin-top: -320px;">
@@ -71,7 +70,7 @@
   <div class="selection-container">
     <!-- 구매자 회원가입 카드 -->
     <!-- <a href="/buyer/signup" class="selection-card"> -->
-    <a href="../buyer/buyer_signup.html" class="selection-card">
+    <a th:href="@{/buyer/signup}" class="selection-card">
       <div class="card-icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
       </div>
@@ -81,7 +80,7 @@
 
     <!-- 판매자 회원가입 카드 -->
     <!-- <a href="/seller/signup" class="selection-card"> -->
-    <a href="../seller/seller_signup.html" class="selection-card">
+    <a th:href="@{/seller/signup}" class="selection-card">
       <div class="card-icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
       </div>
