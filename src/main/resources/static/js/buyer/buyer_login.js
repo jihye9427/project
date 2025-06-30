@@ -1,4 +1,4 @@
-document.querySelector(".buyer-form").addEventListener("submit", async function (e) {
+document.querySelector(".buyer-form").addEventListener("submit", function (e) {
   e.preventDefault(); // 폼 기본 동작 방지
 
   const email = document.getElementById("email").value.trim();
@@ -22,28 +22,23 @@ document.querySelector(".buyer-form").addEventListener("submit", async function 
   }
 
   // 2. 서버에 로그인 요청
-  try {
-    const formData = new URLSearchParams();
-    formData.append('email', email);
-    formData.append('password', password);
-
-    const response = await fetch('/buyer/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: formData
+  fetch("/api/buyers/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email, password })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.rtcd === "0") {
+        alert("로그인 성공! 메인페이지로 이동합니다.");
+        window.location.href = "/";
+      } else {
+        throw new Error(data.rtmsg);
+      }
+    })
+    .catch(err => {
+      alert("로그인 실패: " + err.message);
     });
-
-    if (response.ok && response.redirected) {
-      window.location.href = response.url;
-    } else {
-      alert("이메일 또는 비밀번호가 일치하지 않습니다.");
-      // 로그인 실패 시 현재 페이지에 머무르거나 로그인 페이지로 다시 이동
-      // window.location.href = '/buyer/login';
-    }
-  } catch (err) {
-    alert("로그인 처리 중 오류가 발생했습니다.");
-    console.error(err);
-  }
 });

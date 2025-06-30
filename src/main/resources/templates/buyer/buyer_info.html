@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>계정 정보</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', 'Cabin', sans-serif;
+      background-color: #FBF9EF;
+      color: #1E2203;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    h1, h2 {
+      font-family: 'Cabin', sans-serif;
+      font-weight: 700;
+      color: #658352;
+      text-align: center;
+    }
+
+    .home-button {
+      position: fixed;
+      left: 20px;
+      top: 20px;
+      background-color: #658352;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .home-button:hover {
+      background-color: #4d683f;
+    }
+
+    .account-container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+      width: fit-content;
+      min-width: 360px;
+      max-width: 600px;
+    }
+
+    .account-info p {
+      display: flex;
+      align-items: center;
+      margin: 12px 0;
+      padding: 8px 12px;
+      border-bottom: 1px solid #ddd;
+      font-size: 1rem;
+    }
+
+    .account-info p strong {
+      display: inline-block;
+      width: 70px;
+      text-align: left;
+    }
+
+    .account-info .colon {
+      display: inline-block;
+      width: 16px;
+      text-align: center;
+    }
+
+    .account-info span:not(.colon) {
+      flex: 1;
+      text-align: right;
+      background-color: #fff;
+      font-weight: bold;
+    }
+
+    .account-actions {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 24px;
+      border: 1px solid #888;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 16px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .modal-content h2 {
+        margin-top: 0;
+    }
+
+    .close-button {
+      color: #aaa;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close-button:hover,
+    .close-button:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    #passwordInput {
+        width: calc(100% - 24px);
+        margin: 10px 0;
+        box-sizing: border-box;
+        padding: 20px;
+        font-size: 1rem;
+    }
+
+    .modal-content .error-msg {
+        color: red;
+        font-size: 0.85rem;
+        min-height: 1.5em;
+        text-align: center;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    button {
+      display: block;
+      width: 220px;
+      padding: 12px 0;
+      margin: 12px auto;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 24px;
+      border: 1px solid #658352;
+      background-color: #658352;
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    button:hover {
+      background-color: #94A687;
+      color: #F5F4ED;
+    }
+
+    @media screen and (max-width: 500px) {
+      .account-container {
+        padding: 20px;
+        min-width: 300px;
+      }
+
+      .account-info p {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .account-info span {
+        text-align: left;
+        margin-top: 4px;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+  
+</head>
+<body>
+
+  <a th:href="@{/home}"><img src="../../static/images/free-icon-sprout-7101338.png" alt="홈으로" style="width:48px;height:48px;margin:20px 0 0 20px;position:fixed;left:20px;top:20px;z-index:100;"></a>
+  <a href="../home.html"><img src="../../static/images/free-icon-sprout-7101338.png" alt="홈으로" style="width:48px;height:48px;margin:20px 0 0 20px;position:fixed;left:20px;top:20px;z-index:100;"></a>
+
+  <div class="account-container">
+    <h2>마이페이지 - 계정 정보</h2>
+
+    <div id="account-info" class="account-info">
+      <p><strong>이메일</strong><span class="colon">:</span><span id="email"></span></p>
+      <p><strong>비밀번호</strong><span class="colon">:</span><span id="password"></span></p>
+      <p><strong>전화번호</strong><span class="colon">:</span><span id="phone"></span></p>
+      <p><strong>이름</strong><span class="colon">:</span><span id="realName"></span></p>
+      <p><strong>닉네임</strong><span class="colon">:</span><span id="nickname"></span></p>
+      <p><strong>성별</strong><span class="colon">:</span><span id="gender"></span></p>
+      <p><strong>생일</strong><span class="colon">:</span><span id="birthDate"></span></p>
+      <p><strong>주소</strong><span class="colon">:</span><span id="address"></span></p>
+      <p><strong>생성일</strong><span class="colon">:</span><span id="createdAt"></span></p>
+    </div>
+
+    <div class="account-actions" style="display:flex; gap:12px; justify-content:center;">
+      <button onclick="openModal('edit')" style="width:140px;padding:12px 0;font-size:1.08rem;border-radius:24px;">정보 수정</button>
+      <button onclick="openModal('delete')" style="width:140px;padding:12px 0;font-size:1.08rem;border-radius:24px;">회원 탈퇴</button>
+    </div>
+  </div>
+
+  <!-- Password Modal -->
+  <div id="passwordModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h2>비밀번호 확인</h2>
+      <p>계속하려면 비밀번호를 입력하세요.</p>
+      <input type="password" id="passwordInput" placeholder="비밀번호" autocomplete="current-password">
+      <div id="modalErrorMessage" class="error-msg"></div>
+      <button id="confirmPasswordBtn">확인</button>
+    </div>
+  </div>
+
+  <!-- Delete Confirm Modal -->
+  <div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button" id="deleteCloseBtn">&times;</span>
+      <h2>정말로 계정을 탈퇴 하시겠습니까?</h2>
+      <div style="background:#f8f6e7;padding:16px 12px;border-radius:8px;margin:18px 0 20px 0;color:#a00;font-size:1rem;">
+        <strong>탈퇴 주의사항</strong><br>
+        여기에 탈퇴 주의사항이 들어갑니다.<br>
+        (예: 탈퇴 시 모든 정보가 삭제되며 복구가 불가합니다 등)
+      </div>
+      <div style="display:flex; gap:12px; justify-content:center;">
+        <button id="deleteCancelBtn" style="background:#eee;color:#333;border:1px solid #bbb;width:110px;padding:10px 0;font-size:1rem;border-radius:24px;">취소</button>
+        <button id="deleteConfirmBtn" style="background:#a00;color:#fff;width:110px;padding:10px 0;font-size:1rem;border:none;border-radius:24px;">회원 탈퇴</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 가상의 사용자 데이터
+    const fakeUserData = {
+      email: "hong.gildong@example.com",
+      password: "123",
+      phone: "010-1234-5678",
+      realName: "홍길동",
+      nickname: "길동이",
+      gender: "남성",
+      birthDate: "1990-05-15",
+      address: "서울특별시 강남구 테헤란로 123",
+      createdAt: "2024-01-10 14:32:21"
+    };
+
+    // 페이지 로드 시 데이터 표시
+    window.onload = () => {
+      for (const key in fakeUserData) {
+        document.getElementById(key).textContent = fakeUserData[key];
+      }
+    };
+
+    const modal = document.getElementById('passwordModal');
+    const closeButton = document.querySelector('.close-button');
+    const confirmPasswordBtn = document.getElementById('confirmPasswordBtn');
+    const passwordInput = document.getElementById('passwordInput');
+    const modalErrorMessage = document.getElementById('modalErrorMessage');
+
+    let nextAction = null; // 'edit' 또는 'delete'
+
+    function openModal(action) {
+      nextAction = action;
+      passwordInput.value = '';
+      modalErrorMessage.textContent = '';
+      modal.style.display = 'block';
+      passwordInput.focus();
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+    }
+
+    function proceedWithAction() {
+      closeModal();
+      if (nextAction === 'edit') {
+        // 정보 수정 페이지로 이동
+        location.href = '/account/edit';
+      } else if (nextAction === 'delete') {
+        // 비밀번호 통과 시 탈퇴 확인 모달 띄우기
+        openDeleteModal();
+      }
+    }
+
+    function handlePasswordConfirm() {
+      const enteredPassword = passwordInput.value;
+      if (enteredPassword) {
+        // 실제 앱에서는 여기서 서버로 비밀번호를 보내 검증합니다.
+        // 지금은 비밀번호가 입력되었다는 사실만으로 통과시킵니다.
+        console.log("입력된 비밀번호 (검증 시뮬레이션):", enteredPassword);
+        proceedWithAction();
+      } else {
+        modalErrorMessage.textContent = '비밀번호를 입력해주세요.';
+      }
+    }
+
+    // 모달 이벤트 리스너
+    closeButton.onclick = closeModal;
+    confirmPasswordBtn.onclick = handlePasswordConfirm;
+
+    // 모달 바깥 영역 클릭 시 닫기
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        closeModal();
+      }
+    }
+
+    // 비밀번호 입력창에서 Enter 키를 누르면 확인 버튼 클릭
+    passwordInput.addEventListener('keyup', function(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        handlePasswordConfirm();
+      }
+    });
+
+    const deleteModal = document.getElementById('deleteModal');
+    const deleteCloseBtn = document.getElementById('deleteCloseBtn');
+    const deleteConfirmBtn = document.getElementById('deleteConfirmBtn');
+    const deleteCancelBtn = document.getElementById('deleteCancelBtn');
+
+    function openDeleteModal() {
+      deleteModal.style.display = 'block';
+    }
+    function closeDeleteModal() {
+      deleteModal.style.display = 'none';
+    }
+    deleteCloseBtn.onclick = closeDeleteModal;
+    deleteCancelBtn.onclick = closeDeleteModal;
+    deleteConfirmBtn.onclick = function() {
+      closeDeleteModal();
+      // 실제 탈퇴 로직 또는 알림
+      alert('탈퇴 요청이 전송되었습니다. (가상 동작)');
+    }
+  </script>
+
+</body>
+</html>

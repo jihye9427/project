@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("email").addEventListener("input", validateEmail);
   document.getElementById("password").addEventListener("input", validatePassword);
   document.getElementById("password2").addEventListener("input", validatePasswordMatch);
+  document.getElementById("gender").addEventListener("change", validateGender);
   document.getElementById("birth").addEventListener("change", validateBirth);
   document.getElementById("address").addEventListener("input", validateAddress);
 
@@ -87,16 +88,17 @@ function validateTel() {
     ? ""
     : "전화번호를 입력하여야 합니다.";
 }
+// 성별
+function validateGender() {
+  const gender = document.getElementById("gender").value;
+  const error = document.getElementById("error-gender");
+  error.textContent = !gender ? "성별을 선택해주세요." : "";
+}
 // 생년월일
 function validateBirth() {
   const birth = document.getElementById("birth").value;
   const error = document.getElementById("error-birth");
   error.textContent = !birth ? "생년월일을 입력해주세요." : "";
-  validatePassword();
-  validatePasswordMatch();
-  validateTel();
-  validateBirth();
-  validateAddress();
 }
 // 주소
 function validateAddress() {
@@ -107,6 +109,53 @@ function validateAddress() {
     : "";
 }
 
-// ✅ 폼 제출 처리 - 서버로 전송 방식 (제거)
-// 폼 제출은 서버사이드에서 처리하고, 클라이언트에서는 실시간 유효성 검사만 담당합니다.
-// 아래 로직은 현재 HTML 구조와 맞지 않으므로 제거합니다.
+// ✅ 폼 제출 처리 - 서버로 전송 방식
+document.getElementById("buyer-signup-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  validateName();
+  validateNickname();
+  validateEmail();
+  validatePassword();
+  validatePasswordMatch();
+  validateTel();
+  validateGender();
+  validateBirth();
+  validateAddress();
+
+  const hasError = Array.from(document.querySelectorAll(".error-msg"))
+    .some(div => div.textContent !== "");
+  if (hasError) return;
+
+  // 서버에 보낼 데이터 구성
+  const formData = {
+    name: this.name.value.trim(),
+    nickname: this.nickname.value.trim(),
+    email: this.email.value.trim(),
+    password: this.password.value,
+    tel: this.tel.value.trim(),
+    gender: this.gender.value,
+    birth: this.birth.value,
+    address: this.address.value.trim()
+  };
+
+  fetch("/api/buyers/join", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(formData)
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.rtcd === "0") {
+        alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
+        window.location.href = "/buyer/login";
+      } else {
+        throw new Error(data.rtmsg);
+      }
+    })
+    .catch(err => {
+      alert("회원가입 실패: " + err.message);
+    });
+});

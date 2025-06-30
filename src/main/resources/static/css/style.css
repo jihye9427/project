@@ -21,7 +21,17 @@ h1, h2 {
   color: #658352;
   text-align: center;
 }
+/* -------------------------------
+   🟢 공통 스타일
+-------------------------------- */
+span {
+  background-color: #fff;
+  font-weight: bold;
+  display: flex;
+  justify-content: end;
+  
 
+}
 
 /* -------------------------------
    🟢 공통 버튼 스타일
@@ -39,17 +49,6 @@ button {
   color: white;
   cursor: pointer;
   transition: all 0.2s;
-}
-
-.button-group {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.button-group button {
-  width: 150px;
-  margin: 0;
 }
 
 button:hover {

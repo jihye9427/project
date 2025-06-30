@@ -3,13 +3,13 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("email").addEventListener("input", validateEmail);
   document.getElementById("password").addEventListener("input", validatePassword);
   document.getElementById("password2").addEventListener("input", validatePasswordMatch);
-  document.getElementById("bizRegNo").addEventListener("input", function () {
+  document.getElementById("bizreg").addEventListener("input", function () {
     this.value = formatBizNo(this.value);
     validateBizReg();
   });
-  document.getElementById("shopName").addEventListener("input", validateShopName);
+  document.getElementById("shopname").addEventListener("input", validateShopName);
   document.getElementById("name").addEventListener("input", validateName);
-  document.getElementById("shopAddress").addEventListener("input", validateShopAddress);
+  document.getElementById("shopaddress").addEventListener("input", validateShopAddress);
   document.getElementById("tel").addEventListener("input", function () {
     this.value = formatPhoneNumber(this.value);
     validateTel();
@@ -74,17 +74,17 @@ function validatePasswordMatch() {
 }
 // 사업자등록번호
 function validateBizReg() {
-  const val = document.getElementById("bizRegNo").value.trim();
-  const error = document.getElementById("error-bizRegNo");
+  const val = document.getElementById("bizreg").value.trim();
+  const error = document.getElementById("error-bizreg");
   const regex = /^\d{3}-\d{2}-\d{5}$/;
   error.textContent = !regex.test(val)
-    ? "사업자등록번호를 입력해주세요." : "";
+    ? "사업자등록번호를를 입력해주세요." : "";
 }
 // 상호명
 function validateShopName() {
-  const val = document.getElementById("shopName").value.trim();
-  const error = document.getElementById("error-shopName");
-  error.textContent = (val.length < 2 || val.length > 30) // max 24 -> 30
+  const val = document.getElementById("shopname").value.trim();
+  const error = document.getElementById("error-shopname");
+  error.textContent = (val.length < 2 || val.length > 24)
     ? "상호명을 입력해주세요." : "";
 }
 // 이름
@@ -94,14 +94,14 @@ function validateName() {
   const isKor = /^[가-힣]{2,8}$/.test(val);
   const isEng = /^[a-zA-Z\s]{2,45}$/.test(val);
   error.textContent = (!isKor && !isEng)
-    ? "이름은 한글 2~8자 또는 영문 2~45자로 입력해주세요." : "";
+    ? "이름은 한글 2~8자 입력해주세요." : "";
 }
 // 가게 주소
 function validateShopAddress() {
-  const val = document.getElementById("shopAddress").value.trim();
-  const error = document.getElementById("error-shopAddress");
+  const val = document.getElementById("shopaddress").value.trim();
+  const error = document.getElementById("error-shopaddress");
   error.textContent = (val.length < 5 || val.length > 200)
-    ? "가게 주소를 입력해주세요." : "";
+    ? "가게 주소를를 입력해주세요." : "";
 }
 // 전화번호
 function validateTel() {
@@ -120,7 +120,58 @@ function validateBirth() {
 
 
 // -------------------------------------------
-// ✅ 폼 제출 이벤트 처리 (제거)
+// ✅ 폼 제출 이벤트 처리
 // -------------------------------------------
-// 아래 로직은 현재 HTML 구조와 맞지 않으므로 제거합니다.
-// 폼 제출은 서버사이드에서 처리하고, 클라이언트에서는 실시간 유효성 검사만 담당합니다.
+
+document.getElementById("seller-signup-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  // 모든 유효성 검사 실행
+  validateEmail();
+  validatePassword();
+  validatePasswordMatch();
+  validateBizReg();
+  validateShopName();
+  validateName();
+  validateShopAddress();
+  validateTel();
+  validateBirth();
+
+  const hasError = Array.from(document.querySelectorAll(".error-msg"))
+    .some(div => div.textContent !== "");
+  if (hasError) return;
+
+  // 서버에 전송할 데이터 준비
+  const formData = {
+    email: this.email.value.trim(),
+    password: this.password.value,
+    bizreg: this.bizreg.value.trim(),
+    shopname: this.shopname.value.trim(),
+    name: this.name.value.trim(),
+    shopaddress: this.shopaddress.value.trim(),
+    tel: this.tel.value.trim(),
+    birth: this.birth.value
+  };
+
+  // Spring Boot 서버로 POST 요청
+  fetch("/seller/signup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(formData)
+  })
+    .then(response => {
+      if (response.redirected) {
+        window.location.href = response.url; // 서버에서 redirect:/home 했을 경우
+      } else if (response.ok) {
+        alert("회원가입이 완료되었습니다.");
+        window.location.href = "/home";
+      } else {
+        return response.text().then(msg => { throw new Error(msg); });
+      }
+    })
+    .catch(err => {
+      alert("회원가입 실패: " + err.message);
+    });
+});

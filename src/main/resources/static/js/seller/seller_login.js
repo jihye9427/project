@@ -1,30 +1,49 @@
 // ✅ 판매자 로그인 폼 제출 처리
-document.querySelector('.seller-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
+document.querySelector(".seller-form").addEventListener("submit", function (e) {
+  e.preventDefault(); // 기본 제출 동작 차단
 
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
+  // 입력값 수집
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
 
-  try {
-    const formData = new URLSearchParams();
-    formData.append('email', email);
-    formData.append('password', password);
-
-    const response = await fetch('/seller/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: formData,
-    });
-
-    if (response.ok && response.redirected) {
-      window.location.href = response.url;
-    } else {
-      alert("이메일 또는 비밀번호가 일치하지 않습니다.");
-    }
-  } catch (error) {
-    console.error('Login Error:', error);
-    alert('로그인 처리 중 오류가 발생했습니다.');
+  // 1. 유효성 검사
+  if (!email || !password) {
+    alert("이메일과 비밀번호를 모두 입력하세요.");
+    return;
   }
+
+  // ✅ 2. 이메일 형식 검사
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    alert("올바른 이메일 형식이 아닙니다.");
+    return;
+  }
+
+  // ✅ 3. 비밀번호 길이 검사
+  if (password.length < 4) {
+    alert("비밀번호는 최소 4자 이상이어야 합니다.");
+    return;
+  }
+
+  // ✅ 4. 서버에 로그인 요청
+  fetch("/seller/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email, password })
+  })
+    .then(res => {
+      if (res.redirected) {
+        window.location.href = res.url;
+      } else if (res.ok) {
+        alert("판매자 로그인 성공! 메인페이지로 이동합니다.");
+        window.location.href = "/home";
+      } else {
+        return res.text().then(msg => { throw new Error(msg); });
+      }
+    })
+    .catch(err => {
+      alert("로그인 실패: " + err.message);
+    });
 });

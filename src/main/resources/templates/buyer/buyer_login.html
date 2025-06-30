@@ -5,11 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>구매자 로그인</title>
   <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" href="../../static/css/style.css" />
 </head>
 <body>
 
 <!-- 🏠 홈으로 이동 버튼 -->
-<a th:href="@{/home}" class="home-button">홈으로</a>
+<a th:href="@{/home}"><img src="../../static/images/free-icon-sprout-7101338.png" alt="홈으로" style="width:48px;height:48px;margin:20px 0 0 20px;position:fixed;left:20px;top:20px;z-index:100;"></a>
+<a href="../home.html"><img src="../../static/images/free-icon-sprout-7101338.png" alt="홈으로" style="width:48px;height:48px;margin:20px 0 0 20px;position:fixed;left:20px;top:20px;z-index:100;"></a>
 
 <!-- 👤 구매자 로그인 폼 -->
 <form class="buyer-form" th:action="@{/buyer/login}" method="post">
@@ -37,5 +39,6 @@
 
 <!-- 📜 스크립트 -->
 <script th:src="@{/js/buyer/buyer_login.js}"></script>
+<script src="../../static/js/buyer/buyer_login.js"></script>
 </body>
 </html>

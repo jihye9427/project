@@ -324,38 +324,16 @@
   <!-- Navbar -->
   <header class="navbar8-container1">
     <div class="navbar8-navbar-interactive">
-      <a th:href="@{/}">
-        <img src="https://aheioqhobo.cloudimg.io/v7/_playground-bucket-v2.teleporthq.io_/84ec08e8-34e9-42c7-9445-d2806d156403/fac575ac-7a41-484f-b7ac-875042de11f8?org_if_sml=1&force_format=original" alt="로고" class="navbar8-image1"/>
-      </a>
+      <img src="https://aheioqhobo.cloudimg.io/v7/_playground-bucket-v2.teleporthq.io_/84ec08e8-34e9-42c7-9445-d2806d156403/fac575ac-7a41-484f-b7ac-875042de11f8?org_if_sml=1&force_format=original" alt="로고" class="navbar8-image1"/>
       <nav class="navbar8-links1">
-        <a th:href="@{/}" class="thq-link">홈</a>
+        <a href="#" class="thq-link">홈</a>
         <a href="#" class="thq-link">소개</a>
         <a href="#" class="thq-link">커뮤니티</a>
         <a href="#" class="thq-link">스토어</a>
       </nav>
       <div class="navbar8-buttons1">
-        <!--/* 비로그인 상태 */-->
-        <th:block th:if="${session.loginBuyer == null and session.loginSeller == null}">
-          <button class="thq-button-outline" th:onclick="|location.href='@{/login}'|">로그인</button>
-          <button class="thq-button-filled" th:onclick="|location.href='@{/signup}'|">회원가입</button>
-        </th:block>
-
-        <!--/* 구매자 로그인 상태 */-->
-        <th:block th:if="${session.loginBuyer != null}">
-          <span th:text="|${session.loginBuyer.nickname}님 환영합니다.|" style="margin-right: 16px; align-self: center;"></span>
-          <button class="thq-button-outline" th:onclick="|location.href='@{/buyer/mypage}'|">마이페이지</button>
-          <button id="logoutBtn" class="thq-button-filled">로그아웃</button>
-        </th:block>
-
-        <!--/* 판매자 로그인 상태 */-->
-        <th:block th:if="${session.loginSeller != null}">
-          <span th:text="|${session.loginSeller.shopName}님 환영합니다.|" style="margin-right: 16px; align-self: center;"></span>
-          <button class="thq-button-outline" th:onclick="|location.href='@{/seller/mypage}'|">마이페이지</button>
-          <button id="logoutBtn" class="thq-button-filled">로그아웃</button>
-        </th:block>
-      </div>
-      <div data-thq="thq-burger-menu" class="navbar8-burger-menu">
-        <!-- ... existing code ... -->
+        <button class="thq-button-outline" onclick="location.href='common/select_login.html'">로그인</button>
+        <button class="thq-button-filled" onclick="location.href='common/select_signup.html'">회원가입</button>
       </div>
     </div>
   </header>
@@ -367,7 +345,7 @@
         <p class="thq-body-large">농사를 즐겁게, 소비를 이롭게</p>
       </div>
       <div class="hero17-actions">
-        <button class="thq-button-filled" th:onclick="|location.href='@{/signup}'|">회원 가입</button>
+        <button class="thq-button-filled">회원 가입</button>
         <button class="thq-button-outline">자세히 보기</button>
       </div>
     </div>
@@ -545,21 +523,6 @@
 
     renderSlider(posts1, document.getElementById('sliderTrack1'));
     renderSlider(posts2, document.getElementById('sliderTrack2'));
-
-    const logoutButton = document.getElementById('logoutBtn');
-    if (logoutButton) {
-      logoutButton.addEventListener('click', function (e) {
-        e.preventDefault(); // a 태그의 기본 동작(페이지 이동)을 막음
-
-        // 동적으로 form을 생성하여 POST 요청 전송
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/logout';
-
-        document.body.appendChild(form);
-        form.submit();
-      });
-    }
   </script>
 </body>
 </html>
