@@ -52,6 +52,7 @@ public class SellerDTO {
     private String shopAddress;
     private String tel;
     private String currentPassword;
+    private String newPassword;
   }
 
   @Data

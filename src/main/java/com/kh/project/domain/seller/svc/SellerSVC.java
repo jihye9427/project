@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface SellerSVC {
   Seller join(Seller seller);
-  Seller login(String email, String password);
+  Optional<Seller> login(String email, String password);
   Optional<Seller> findMemberInfo(Long sellerId);
   int updateMemberInfo(Long sellerId, Seller seller);
   int deleteMember(Long sellerId);

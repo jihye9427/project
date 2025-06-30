@@ -1,8 +1,8 @@
 package com.kh.project.domain.common;
 
+import com.kh.project.domain.exception.BusinessException;
 import lombok.Getter;
 import lombok.ToString;
-import com.kh.project.domain.exception.BusinessException;
 
 import java.util.Map;
 
@@ -28,6 +28,24 @@ public class ApiResponse<T> {
         this.paging = paging;
         this.details = details;
     }
+
+    // ==================== 기존 코드에서 사용하던 create 메소드 추가 ====================
+    /**
+     * 코드와 메시지, 데이터로 응답 생성 (기존 코드 호환용)
+     */
+    public static <T> ApiResponse<T> create(String code, String message, T data) {
+        boolean success = "0".equals(code); // "0"이면 성공으로 간주
+        return new ApiResponse<>(success, data, message, code, null, null);
+    }
+
+    /**
+     * 코드와 메시지로 응답 생성 (기존 코드 호환용)
+     */
+    public static <T> ApiResponse<T> create(String code, String message) {
+        boolean success = "0".equals(code); // "0"이면 성공으로 간주
+        return new ApiResponse<>(success, null, message, code, null, null);
+    }
+    // ==================== 여기까지 추가 ====================
 
     /**
      * 성공 응답 생성
@@ -90,4 +108,4 @@ public class ApiResponse<T> {
             this.totalCount = totalCount;
         }
     }
-} 
+}

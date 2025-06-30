@@ -22,41 +22,56 @@ public class BuyerSVCImpl implements BuyerSVC {
 
     @Override
     public Buyer join(Buyer buyer) {
+        log.info("구매자 회원가입 시도: {}", buyer.getEmail());
         if (buyerDAO.existsByEmail(buyer.getEmail())) {
+            log.warn("이미 존재하는 이메일: {}", buyer.getEmail());
             throw new BusinessException(ApiResponseCode.USER_ALREADY_EXISTS);
         }
-        return buyerDAO.save(buyer);
+
+        Buyer savedBuyer = buyerDAO.save(buyer);
+        log.info("구매자 회원가입 성공: {}", savedBuyer.getBuyerId());
+        return savedBuyer;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Buyer login(String email, String password) throws UserException.LoginFailed {
-        log.info("로그인 시도 - 이메일: [{}]", email);
+    public Optional<Buyer> login(String email, String password) {
+        log.info("구매자 로그인 시도: {}", email);
 
-        // null 체크 추가
-        if (email == null || password == null) {
-            log.warn("이메일 또는 비밀번호가 null 입니다");
-            throw new UserException.LoginFailed("아이디 또는 비밀번호가 일치하지 않습니다.");
+        if (email == null || password == null || email.trim().isEmpty() || password.trim().isEmpty()) {
+            log.warn("이메일 또는 비밀번호가 비어있습니다.");
+            return Optional.empty(); // 실패 시 빈 Optional 반환
         }
 
-        // 빈 문자열 체크
         String cleanEmail = email.trim();
         String cleanPassword = password.trim();
 
+        // findByEmail의 결과가 Optional이므로, 함수형 스타일로 처리
         return buyerDAO.findByEmail(cleanEmail)
-            .filter(buyer -> {
-                boolean isValid = buyer.getPassword().equals(cleanPassword);
-                log.debug("인증 검증 완료");
-                return isValid;
-            })
             .map(buyer -> {
-                log.info("로그인 성공");
+                // 비밀번호 확인
+                if (!buyer.getPassword().equals(cleanPassword)) {
+                    log.warn("비밀번호 불일치: {}", cleanEmail);
+                    return null; // filter에서 걸러짐
+                }
+                // 계정 상태 확인
+                if (!buyer.canLogin()) {
+                    // 구체적인 상태별 로깅
+                    if (buyer.isWithdrawn()) {
+                        log.warn("탈퇴한 회원 로그인 시도: {}", cleanEmail);
+                    } else if (buyer.isSuspended()) {
+                        log.warn("정지된 계정 로그인 시도: {}", cleanEmail);
+                    } else if (buyer.isDormant()) {
+                        log.warn("휴면 계정 로그인 시도: {}", cleanEmail);
+                    } else {
+                        log.warn("비활성 계정 로그인 시도: {} (상태: {})", cleanEmail, buyer.getStatus());
+                    }
+                    return null; // filter에서 걸러짐
+                }
+                log.info("구매자 로그인 성공: {}", buyer.getBuyerId());
                 return buyer;
             })
-            .orElseThrow(() -> {
-                log.warn("로그인 실패");
-                return new UserException.LoginFailed("아이디 또는 비밀번호가 일치하지 않습니다.");
-            });
+            .filter(buyer -> buyer != null);
     }
 
     @Override

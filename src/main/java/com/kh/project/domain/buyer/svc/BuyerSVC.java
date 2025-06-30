@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface BuyerSVC {
   Buyer join(Buyer buyer);
-  Buyer login(String email, String password) throws LoginFailed;
+  Optional<Buyer> login(String email, String password);
   Optional<Buyer> findMemberInfo(Long buyerId);
   int updateMemberInfo(Long buyerId, Buyer buyer);
   int deleteMember(Long buyerId);

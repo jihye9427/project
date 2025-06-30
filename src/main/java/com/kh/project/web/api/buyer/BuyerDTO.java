@@ -4,6 +4,10 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -35,6 +39,8 @@ public class BuyerDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birth;
     private String address;
+
+    private String gubun;
   }
 
   @Data
@@ -47,18 +53,38 @@ public class BuyerDTO {
     private String gender;
     private LocalDate birth;
     private String address;
+    private String status;
   }
 
   @Data
   public static class UpdateRequest {
-    private String tel;
-    private String nickname;
-    private String address;
+    @NotBlank(message = "현재 비밀번호는 필수입니다.")
     private String currentPassword;
+
+    @Size(min = 8, max = 15, message = "새 비밀번호는 8~15자 사이여야 합니다.")
+    private String newPassword; // 새 비밀번호 필드 추가
+
+    private String tel;
+
+    @Size(max = 8, message = "닉네임은 최대 8자까지 가능합니다.")
+    private String nickname;
+
+    private String address;
   }
 
   @Data
   public static class PasswordCheckReq {
+    @NotBlank(message = "비밀번호는 필수입니다.")
     private String password;
+  }
+
+  @Getter
+  @Setter
+  @AllArgsConstructor
+  @NoArgsConstructor
+  public static class JoinResponse {
+    private Long buyerId;
+    private String email;
+    private String name;
   }
 }
